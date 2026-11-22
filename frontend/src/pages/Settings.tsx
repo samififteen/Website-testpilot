@@ -79,7 +79,7 @@ export function Settings() {
   if (error || !settings) {
     return (
       <Card className="p-5">
-        <p className="text-sm text-rose-200">{error ?? 'Settings unavailable.'}</p>
+        <p className="text-sm text-rose-800">{error ?? 'Settings unavailable.'}</p>
         <Button variant="secondary" size="sm" className="mt-3" onClick={() => void load()}>
           Retry
         </Button>
@@ -103,10 +103,10 @@ export function Settings() {
       <div className="grid items-start gap-4 xl:grid-cols-2">
         <Card className="p-4 sm:p-5">
           <div className="flex items-center gap-2">
-            <SettingsIcon className="size-4 text-indigo-300" />
-            <h2 className="text-sm font-semibold text-[#f0f1f6]">Testing defaults</h2>
+            <SettingsIcon className="size-4 text-indigo-700" />
+            <h2 className="text-sm font-semibold text-[#171512]">Testing defaults</h2>
           </div>
-          <p className="mt-1 text-[11px] text-[#6b7280]">
+          <p className="mt-1 text-[11px] text-[#6b665c]">
             Applied to new tests created from the API when a field is omitted, and pre-filled in the
             New Test form.
           </p>
@@ -181,14 +181,14 @@ export function Settings() {
         <div className="space-y-4">
           <Card className="p-4 sm:p-5">
             <div className="flex items-center gap-2">
-              <Bot className="size-4 text-violet-300" />
-              <h2 className="text-sm font-semibold text-[#f0f1f6]">AI analysis</h2>
+              <Bot className="size-4 text-violet-700" />
+              <h2 className="text-sm font-semibold text-[#171512]">AI analysis</h2>
               <span
                 className={cn(
                   'ml-auto rounded-full border px-2 py-0.5 text-[10px]',
                   aiConfigured
-                    ? 'border-violet-400/30 bg-violet-500/10 text-violet-200'
-                    : 'border-[#262b38] bg-[#11111a] text-[#8b93a3]',
+                    ? 'border-violet-600/30 bg-violet-500/10 text-violet-800'
+                    : 'border-[#d6cdbb] bg-[#f7f4ed] text-[#6b665c]',
                 )}
               >
                 {aiConfigured ? 'Key configured' : 'Rule-based mode'}
@@ -220,14 +220,14 @@ export function Settings() {
                   />
                 </Field>
               </div>
-              <div className="rounded-lg border border-[#1b1e27] bg-[#0a0c11] p-2.5 text-[10px] leading-relaxed text-[#6b7280]">
-                <p className="flex items-center gap-1.5 text-[#8b93a3]">
+              <div className="rounded-lg border border-[#ddd6c8] bg-[#fdfcf8] p-2.5 text-[10px] leading-relaxed text-[#6b665c]">
+                <p className="flex items-center gap-1.5 text-[#6b665c]">
                   <ShieldCheck className="size-3.5" /> Server-side key only
                 </p>
                 <p className="mt-1">
                   Source: {aiSource}. Keys are never returned by the API or stored in the browser.
-                  Set <code className="text-[#8b93a3]">AI_API_KEY</code> (or{' '}
-                  <code className="text-[#8b93a3]">OPENAI_API_KEY</code>) in the backend
+                  Set <code className="text-[#6b665c]">AI_API_KEY</code> (or{' '}
+                  <code className="text-[#6b665c]">OPENAI_API_KEY</code>) in the backend
                   environment, then restart the server.
                 </p>
               </div>
@@ -236,8 +236,8 @@ export function Settings() {
 
           <Card className="p-4 sm:p-5">
             <div className="flex items-center gap-2">
-              <Camera className="size-4 text-indigo-300" />
-              <h2 className="text-sm font-semibold text-[#f0f1f6]">Screenshots</h2>
+              <Camera className="size-4 text-indigo-700" />
+              <h2 className="text-sm font-semibold text-[#171512]">Screenshots</h2>
             </div>
             <div className="mt-3 space-y-2">
               <Toggle
@@ -266,9 +266,9 @@ export function Settings() {
 
       <Card className="p-4 sm:p-5">
         <div className="flex flex-wrap items-center gap-2">
-          <Server className="size-4 text-indigo-300" />
-          <h2 className="text-sm font-semibold text-[#f0f1f6]">System status</h2>
-          <span className="text-[10px] uppercase tracking-wide text-[#5f6776]">
+          <Server className="size-4 text-indigo-700" />
+          <h2 className="text-sm font-semibold text-[#171512]">System status</h2>
+          <span className="text-[10px] text-[#756f62]">
             verified by the backend, not cached in the browser
           </span>
           <Button variant="ghost" size="sm" className="ml-auto" onClick={() => void load()}>
@@ -309,14 +309,14 @@ export function Settings() {
               ok: Boolean(system),
             },
           ].map((item) => (
-            <div key={item.label} className="rounded-lg border border-[#1b1e27] bg-[#0a0c11] p-2.5">
-              <p className="flex items-center gap-1.5 text-[10px] uppercase tracking-wide text-[#6b7280]">
+            <div key={item.label} className="rounded-lg border border-[#ddd6c8] bg-[#fdfcf8] p-2.5">
+              <p className="flex items-center gap-1.5 text-[10px] text-[#6b665c]">
                 {item.icon} {item.label}
               </p>
               <p
                 className={cn(
                   'mt-1 text-[11px] font-medium',
-                  item.ok ? 'text-emerald-300' : 'text-amber-300',
+                  item.ok ? 'text-emerald-700' : 'text-amber-700',
                 )}
               >
                 {item.value}
@@ -325,24 +325,24 @@ export function Settings() {
           ))}
         </div>
 
-        <div className="mt-3 grid gap-2 text-[11px] text-[#6b7280] sm:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-3 grid gap-2 text-[11px] text-[#6b665c] sm:grid-cols-2 xl:grid-cols-3">
           <p>
-            Screenshots stored: <span className="text-[#c3c9d6]">{system?.screenshots_stored ?? 0}</span>
+            Screenshots stored: <span className="text-[#3f3a33]">{system?.screenshots_stored ?? 0}</span>
           </p>
           <p>
             Concurrency limit:{' '}
-            <span className="text-[#c3c9d6]">{system?.max_concurrency ?? '—'}</span>
+            <span className="text-[#3f3a33]">{system?.max_concurrency ?? '—'}</span>
           </p>
           <p>
             Uptime:{' '}
-            <span className="text-[#c3c9d6]">
+            <span className="text-[#3f3a33]">
               {system ? `${Math.round(system.uptime_seconds)}s` : '—'}
             </span>
           </p>
         </div>
 
         {system?.allow_local_targets ? (
-          <p className="mt-3 flex items-start gap-2 rounded-lg border border-amber-400/20 bg-amber-500/5 p-2.5 text-[11px] text-amber-200">
+          <p className="mt-3 flex items-start gap-2 rounded-lg border border-amber-600/20 bg-amber-500/5 p-2.5 text-[11px] text-amber-800">
             <TriangleAlert className="mt-0.5 size-3.5 shrink-0" />
             Local/private targets are enabled on this server
             (TESTPILOT_ALLOW_LOCAL_TARGETS). This is intended only for the bundled fixture site and
@@ -350,11 +350,11 @@ export function Settings() {
           </p>
         ) : null}
 
-        <div className="mt-3 rounded-lg border border-[#1b1e27] bg-[#0a0c11] p-3">
-          <p className="flex items-center gap-1.5 text-[10px] uppercase tracking-wide text-[#6b7280]">
+        <div className="mt-3 rounded-lg border border-[#ddd6c8] bg-[#fdfcf8] p-3">
+          <p className="flex items-center gap-1.5 text-[10px] text-[#6b665c]">
             <Info className="size-3" /> Fixed by the server environment
           </p>
-          <ul className="mt-1.5 space-y-1 text-[11px] text-[#6b7280]">
+          <ul className="mt-1.5 space-y-1 text-[11px] text-[#6b665c]">
             {readOnly.map((item) => (
               <li key={item}>· {item}</li>
             ))}

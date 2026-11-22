@@ -83,7 +83,7 @@ export function Reports() {
 
       <div className="mb-4 flex items-center gap-2">
         <div className="relative max-w-sm flex-1">
-          <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-[#5f6776]" />
+          <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-[#756f62]" />
           <Input
             value={searchInput}
             onChange={(event) => setSearchInput(event.target.value)}
@@ -92,11 +92,11 @@ export function Reports() {
             aria-label="Search reports"
           />
         </div>
-        <span className="text-[11px] text-[#6b7280]">{total} completed run(s)</span>
+        <span className="text-[11px] text-[#6b665c]">{total} completed run(s)</span>
       </div>
 
       {error ? (
-        <Card className="mb-4 border-rose-500/30 bg-rose-500/5 p-3 text-xs text-rose-200">{error}</Card>
+        <Card className="mb-4 border-rose-500/30 bg-rose-500/5 p-3 text-xs text-rose-800">{error}</Card>
       ) : null}
 
       {loading ? (
@@ -128,39 +128,39 @@ export function Reports() {
               <Card key={run.id} className="flex flex-col p-4">
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-[#f0f1f6]">
+                    <p className="truncate text-sm font-medium text-[#171512]">
                       {run.name || run.page_title || shortUrl(run.url)}
                     </p>
-                    <p className="mt-0.5 truncate text-[11px] text-[#6b7280]">{run.url}</p>
+                    <p className="mt-0.5 truncate text-[11px] text-[#6b665c]">{run.url}</p>
                   </div>
                   <StatusBadge status={run.status} />
                 </div>
 
                 <div className="mt-3 flex items-center gap-3">
-                  <div className="rounded-lg border border-[#1b1e27] bg-[#0a0c11] px-2.5 py-1.5 text-center">
+                  <div className="rounded-lg border border-[#ddd6c8] bg-[#fdfcf8] px-2.5 py-1.5 text-center">
                     <p className={cn('text-lg font-semibold', tone.text)}>{run.health_score ?? '—'}</p>
-                    <p className="text-[9px] uppercase tracking-wide text-[#5f6776]">health</p>
+                    <p className="text-[9px] text-[#756f62]">health</p>
                   </div>
                   <div className="grid flex-1 grid-cols-3 gap-1 text-center text-[11px]">
                     {[
-                      { label: 'pass', value: run.counts.passed, text: 'text-emerald-300', bg: 'bg-emerald-500/[0.07]' },
-                      { label: 'fail', value: run.counts.failed, text: 'text-rose-300', bg: 'bg-rose-500/[0.07]' },
-                      { label: 'warn', value: run.counts.warnings, text: 'text-amber-300', bg: 'bg-amber-500/[0.07]' },
+                      { label: 'pass', value: run.counts.passed, text: 'text-emerald-700', bg: 'bg-emerald-500/[0.07]' },
+                      { label: 'fail', value: run.counts.failed, text: 'text-rose-700', bg: 'bg-rose-500/[0.07]' },
+                      { label: 'warn', value: run.counts.warnings, text: 'text-amber-700', bg: 'bg-amber-500/[0.07]' },
                     ].map((stat) => (
                       <div
                         key={stat.label}
-                        className={cn('rounded-md py-1', stat.value > 0 ? stat.bg : 'bg-white/[0.02]')}
+                        className={cn('rounded-md py-1', stat.value > 0 ? stat.bg : 'bg-[#1b1916]/[0.02]')}
                       >
-                        <p className={cn('font-medium', stat.value > 0 ? stat.text : 'text-[#6b7280]')}>
+                        <p className={cn('font-medium', stat.value > 0 ? stat.text : 'text-[#6b665c]')}>
                           {stat.value}
                         </p>
-                        <p className="text-[9px] text-[#5f6776]">{stat.label}</p>
+                        <p className="text-[9px] text-[#756f62]">{stat.label}</p>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <p className="mt-2.5 text-[10px] text-[#6b7280]">
+                <p className="mt-2.5 text-[10px] text-[#6b665c]">
                   {formatDate(run.created_at)} · {formatDuration(run.duration_ms)}
                 </p>
 
@@ -173,7 +173,7 @@ export function Reports() {
                   <a
                     href={api.exportJsonUrl(run.id)}
                     download
-                    className="focus-ring rounded-lg border border-[#262b38] p-1.5 text-[#8b93a3] hover:text-[#dcdfe8]"
+                    className="focus-ring rounded-lg border border-[#d6cdbb] p-1.5 text-[#6b665c] hover:text-[#26231f]"
                     aria-label="Export JSON"
                     title="Export JSON"
                   >
@@ -182,7 +182,7 @@ export function Reports() {
                   <a
                     href={api.exportHtmlUrl(run.id)}
                     download
-                    className="focus-ring rounded-lg border border-[#262b38] p-1.5 text-[#8b93a3] hover:text-[#dcdfe8]"
+                    className="focus-ring rounded-lg border border-[#d6cdbb] p-1.5 text-[#6b665c] hover:text-[#26231f]"
                     aria-label="Export HTML"
                     title="Export HTML"
                   >

@@ -160,9 +160,9 @@ export function History() {
       />
 
       <Card className="overflow-hidden">
-        <div className="flex flex-col gap-2 border-b border-[#14171e] p-3 lg:flex-row lg:items-center">
+        <div className="flex flex-col gap-2 border-b border-[#e5dfd1] p-3 lg:flex-row lg:items-center">
           <div className="relative w-full lg:max-w-sm">
-            <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-[#5f6776]" />
+            <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-[#756f62]" />
             <Input
               value={searchInput}
               onChange={(event) => setSearchInput(event.target.value)}
@@ -212,7 +212,7 @@ export function History() {
         </div>
 
         {error ? (
-          <div className="border-b border-rose-500/20 bg-rose-500/5 px-4 py-2 text-xs text-rose-200">
+          <div className="border-b border-rose-500/20 bg-rose-500/5 px-4 py-2 text-xs text-rose-800">
             {error}
           </div>
         ) : null}
@@ -243,8 +243,8 @@ export function History() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[880px] text-left text-xs">
-              <thead className="text-[10px] uppercase tracking-wide text-[#6b7280]">
-                <tr className="border-b border-[#14171e]">
+              <thead className="text-[10px] text-[#6b665c]">
+                <tr className="border-b border-[#e5dfd1]">
                   <th className="px-4 py-2.5 font-medium">Website</th>
                   <th className="px-3 py-2.5 font-medium">Status</th>
                   <th className="px-3 py-2.5 font-medium">Passed</th>
@@ -257,41 +257,41 @@ export function History() {
               </thead>
               <tbody>
                 {items.map((run) => (
-                  <tr key={run.id} className="border-b border-[#11141b] last:border-0 hover:bg-white/[0.02]">
+                  <tr key={run.id} className="border-b border-[#f4f1e9] last:border-0 hover:bg-[#1b1916]/[0.02]">
                     <td className="px-4 py-3">
-                      <Link to={`/reports/${run.id}`} className="font-medium text-[#dcdfe8] hover:text-indigo-200">
+                      <Link to={`/reports/${run.id}`} className="font-medium text-[#26231f] hover:text-indigo-800">
                         {run.name || run.page_title || shortUrl(run.url)}
                       </Link>
-                      <p className="mt-0.5 max-w-[260px] truncate text-[11px] text-[#6b7280]">{run.url}</p>
+                      <p className="mt-0.5 max-w-[260px] truncate text-[11px] text-[#6b665c]">{run.url}</p>
                     </td>
                     <td className="px-3 py-3">
                       <StatusBadge status={run.status} />
                     </td>
-                    <td className="px-3 py-3 text-emerald-300">{run.counts.passed}</td>
-                    <td className="px-3 py-3 text-rose-300">{run.counts.failed}</td>
-                    <td className="px-3 py-3 text-[#8b93a3]">{formatDuration(run.duration_ms)}</td>
+                    <td className="px-3 py-3 text-emerald-700">{run.counts.passed}</td>
+                    <td className="px-3 py-3 text-rose-700">{run.counts.failed}</td>
+                    <td className="px-3 py-3 text-[#6b665c]">{formatDuration(run.duration_ms)}</td>
                     <td className="px-3 py-3">
                       <span
                         className={cn(
                           'font-medium',
                           run.health_score === null
-                            ? 'text-[#6b7280]'
+                            ? 'text-[#6b665c]'
                             : run.health_score >= 90
-                              ? 'text-emerald-300'
+                              ? 'text-emerald-700'
                               : run.health_score >= 70
-                                ? 'text-amber-300'
-                                : 'text-rose-300',
+                                ? 'text-amber-700'
+                                : 'text-rose-700',
                         )}
                       >
                         {run.health_score ?? '—'}
                       </span>
                     </td>
-                    <td className="px-3 py-3 text-[#6b7280]">{formatDate(run.created_at)}</td>
+                    <td className="px-3 py-3 text-[#6b665c]">{formatDate(run.created_at)}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-1">
                         <Link
                           to={`/reports/${run.id}`}
-                          className="focus-ring rounded-md p-1.5 text-[#8b93a3] hover:bg-white/5 hover:text-[#dcdfe8]"
+                          className="focus-ring rounded-md p-1.5 text-[#6b665c] hover:bg-white/5 hover:text-[#26231f]"
                           aria-label={`View report for ${run.url}`}
                           title="View report"
                         >
@@ -301,7 +301,7 @@ export function History() {
                           type="button"
                           onClick={() => void rerun(run)}
                           disabled={busyId === run.id}
-                          className="focus-ring rounded-md p-1.5 text-[#8b93a3] hover:bg-white/5 hover:text-indigo-200 disabled:opacity-40"
+                          className="focus-ring rounded-md p-1.5 text-[#6b665c] hover:bg-white/5 hover:text-indigo-800 disabled:opacity-40"
                           aria-label={`Re-run ${run.url}`}
                           title="Re-run with the same configuration"
                         >
@@ -310,7 +310,7 @@ export function History() {
                         <button
                           type="button"
                           onClick={() => setDeleteTarget(run)}
-                          className="focus-ring rounded-md p-1.5 text-[#6b7280] hover:bg-rose-500/10 hover:text-rose-300"
+                          className="focus-ring rounded-md p-1.5 text-[#6b665c] hover:bg-rose-500/10 hover:text-rose-700"
                           aria-label={`Delete ${run.url}`}
                           title="Delete execution"
                         >
@@ -325,7 +325,7 @@ export function History() {
           </div>
         )}
 
-        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#14171e] px-4 py-2.5 text-[11px] text-[#6b7280]">
+        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#e5dfd1] px-4 py-2.5 text-[11px] text-[#6b665c]">
           <span>
             {total} execution{total === 1 ? '' : 's'} · page {page} of {pages}
           </span>
@@ -357,9 +357,9 @@ export function History() {
         title="Delete this execution?"
         onClose={() => setDeleteTarget(null)}
       >
-        <p className="text-xs leading-relaxed text-[#8b93a3]">
+        <p className="text-xs leading-relaxed text-[#6b665c]">
           This permanently removes the execution{' '}
-          <span className="font-mono text-[#c3c9d6]">{deleteTarget?.id}</span>, all of its test
+          <span className="font-mono text-[#3f3a33]">{deleteTarget?.id}</span>, all of its test
           results and stored screenshots. Reports exported before deletion are not affected.
         </p>
         <div className="mt-4 flex justify-end gap-2">

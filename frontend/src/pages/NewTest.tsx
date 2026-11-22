@@ -103,33 +103,33 @@ function LivePanel({
     <Card className="p-4">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-[10px] uppercase tracking-[0.16em] text-[#6b7280]">Live execution</p>
-          <p className="mt-1 truncate text-sm font-medium text-[#f0f1f6]">{url}</p>
-          <p className="mt-0.5 font-mono text-[10px] text-[#5f6776]">{executionId}</p>
+          <p className="text-[10px] text-[#6b665c]">Live execution</p>
+          <p className="mt-1 truncate text-sm font-medium text-[#171512]">{url}</p>
+          <p className="mt-0.5 font-mono text-[10px] text-[#756f62]">{executionId}</p>
         </div>
         {snapshot ? <StatusBadge status={snapshot.status} /> : <StatusBadge status="queued" />}
       </div>
 
       <div className="mt-4">
-        <div className="h-1.5 overflow-hidden rounded-full bg-[#1c1c28]">
+        <div className="h-1.5 overflow-hidden rounded-full bg-[#e5dfd1]">
           <div
             className={cn(
               'h-full rounded-full transition-all duration-500',
               snapshot?.status === 'failed'
-                ? 'bg-rose-400'
+                ? 'bg-rose-600'
                 : snapshot?.status === 'warnings'
-                  ? 'bg-amber-400'
-                  : 'bg-indigo-400',
+                  ? 'bg-amber-600'
+                  : 'bg-indigo-600',
             )}
             style={{ width: `${percent}%` }}
           />
         </div>
-        <div className="mt-2 flex items-center justify-between text-[11px] text-[#6b7280]">
+        <div className="mt-2 flex items-center justify-between text-[11px] text-[#6b665c]">
           <span className="flex items-center gap-1.5">
             {done ? (
-              <CheckCircle2 className="size-3.5 text-emerald-400" />
+              <CheckCircle2 className="size-3.5 text-emerald-600" />
             ) : (
-              <Loader2 className="size-3.5 animate-spin text-indigo-300" />
+              <Loader2 className="size-3.5 animate-spin text-indigo-700" />
             )}
             {snapshot?.progress?.message ?? 'Waiting for the worker…'}
           </span>
@@ -140,21 +140,21 @@ function LivePanel({
       {snapshot ? (
         <div className="mt-3 grid grid-cols-4 gap-1.5 text-center">
           {[
-            ['Passed', snapshot.counts.passed, 'text-emerald-300'],
-            ['Failed', snapshot.counts.failed, 'text-rose-300'],
-            ['Warnings', snapshot.counts.warnings, 'text-amber-300'],
-            ['Skipped', snapshot.counts.skipped, 'text-[#8b93a3]'],
+            ['Passed', snapshot.counts.passed, 'text-emerald-700'],
+            ['Failed', snapshot.counts.failed, 'text-rose-700'],
+            ['Warnings', snapshot.counts.warnings, 'text-amber-700'],
+            ['Skipped', snapshot.counts.skipped, 'text-[#6b665c]'],
           ].map(([label, value, tone]) => (
-            <div key={String(label)} className="rounded-lg border border-[#1b1e27] bg-[#0a0c11] py-1.5">
+            <div key={String(label)} className="rounded-lg border border-[#ddd6c8] bg-[#fdfcf8] py-1.5">
               <p className={`text-sm font-medium ${tone}`}>{value}</p>
-              <p className="text-[9px] uppercase tracking-wide text-[#5f6776]">{label}</p>
+              <p className="text-[9px] text-[#756f62]">{label}</p>
             </div>
           ))}
         </div>
       ) : null}
 
       {streamError ? (
-        <p className="mt-3 rounded-lg border border-amber-400/20 bg-amber-500/5 px-2.5 py-1.5 text-[10px] text-amber-200/90">
+        <p className="mt-3 rounded-lg border border-amber-600/20 bg-amber-500/5 px-2.5 py-1.5 text-[10px] text-amber-800/90">
           Live stream unavailable — falling back to polling. Results are still being saved.
         </p>
       ) : null}
@@ -167,11 +167,11 @@ function LivePanel({
             .map((result) => (
               <div
                 key={result.id}
-                className="flex items-center justify-between gap-2 rounded-lg border border-[#191d26] bg-[#0a0c11] px-2.5 py-1.5"
+                className="flex items-center justify-between gap-2 rounded-lg border border-[#e5dfd1] bg-[#fdfcf8] px-2.5 py-1.5"
               >
                 <div className="min-w-0">
-                  <p className="truncate text-[11px] text-[#dcdfe8]">{result.test_name}</p>
-                  <p className="text-[9px] uppercase tracking-wide text-[#5f6776]">
+                  <p className="truncate text-[11px] text-[#26231f]">{result.test_name}</p>
+                  <p className="text-[9px] text-[#756f62]">
                     {result.category} · {formatDuration(result.duration_ms)}
                   </p>
                 </div>
@@ -182,7 +182,7 @@ function LivePanel({
               </div>
             ))
         ) : (
-          <p className="rounded-lg border border-dashed border-[#262636] px-3 py-4 text-center text-[11px] text-[#6b7280]">
+          <p className="rounded-lg border border-dashed border-[#ddd6c8] px-3 py-4 text-center text-[11px] text-[#6b665c]">
             Checks appear here as soon as each one finishes.
           </p>
         )}
@@ -355,15 +355,15 @@ export function NewTest() {
       <div className="grid gap-5 xl:grid-cols-[1.35fr_1fr]">
         <form onSubmit={submit} noValidate className="space-y-4">
           <Card className="p-4 sm:p-5">
-            <h2 className="text-sm font-semibold text-[#f0f1f6]">Target</h2>
-            <p className="mt-0.5 text-[11px] text-[#6b7280]">
+            <h2 className="text-sm font-semibold text-[#171512]">Target</h2>
+            <p className="mt-0.5 text-[11px] text-[#6b665c]">
               HTTP and HTTPS only. Localhost, private ranges and cloud metadata endpoints are
               rejected by the server as well.
             </p>
             <div className="mt-3 space-y-3">
               <Field label="Website URL" htmlFor="url" error={errors.url} hint="Example: https://staging.yourproduct.com">
                 <div className="relative">
-                  <Link2 className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#5f6776]" />
+                  <Link2 className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-[#756f62]" />
                   <Input
                     id="url"
                     name="url"
@@ -390,7 +390,7 @@ export function NewTest() {
           </Card>
 
           <Card className="p-4 sm:p-5">
-            <h2 className="text-sm font-semibold text-[#f0f1f6]">Scope and limits</h2>
+            <h2 className="text-sm font-semibold text-[#171512]">Scope and limits</h2>
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
               <Field label="Browser" htmlFor="browser" hint="Chromium ships with the deployment.">
                 <Select
@@ -463,7 +463,7 @@ export function NewTest() {
           </Card>
 
           <Card className="p-4 sm:p-5">
-            <h2 className="text-sm font-semibold text-[#f0f1f6]">Checks</h2>
+            <h2 className="text-sm font-semibold text-[#171512]">Checks</h2>
             <div className="mt-3 grid gap-2 sm:grid-cols-2">
               <Toggle
                 label="Link checking"
@@ -492,17 +492,17 @@ export function NewTest() {
             </div>
           </Card>
 
-          <Card className="border-indigo-400/20 bg-indigo-500/[0.04] p-4">
+          <Card className="border-indigo-600/20 bg-indigo-500/[0.04] p-4">
             <div className="flex items-start gap-2.5">
-              <ShieldAlert className="mt-0.5 size-4 shrink-0 text-indigo-300" />
-              <div className="text-[11px] leading-relaxed text-[#8b93a3]">
-                <p className="font-medium text-[#dcdfe8]">Authorization required</p>
+              <ShieldAlert className="mt-0.5 size-4 shrink-0 text-indigo-700" />
+              <div className="text-[11px] leading-relaxed text-[#6b665c]">
+                <p className="font-medium text-[#26231f]">Authorization required</p>
                 <p className="mt-1">
                   Run tests only against websites you own or have explicit written permission to
                   test. TestPilot blocks private networks, refuses destructive actions, never tries
                   credentials, does not bypass CAPTCHAs and respects rate limits.
                 </p>
-                <label className="mt-2.5 flex cursor-pointer items-start gap-2 text-[#c3c9d6]">
+                <label className="mt-2.5 flex cursor-pointer items-start gap-2 text-[#3f3a33]">
                   <input
                     type="checkbox"
                     checked={authorized}
@@ -512,7 +512,7 @@ export function NewTest() {
                   <span>I own this website or have permission to test it.</span>
                 </label>
                 {errors.authorized ? (
-                  <p className="mt-1 text-[11px] text-rose-300" role="alert">
+                  <p className="mt-1 text-[11px] text-rose-700" role="alert">
                     {errors.authorized}
                   </p>
                 ) : null}
@@ -550,29 +550,29 @@ export function NewTest() {
           ) : (
             <div className="space-y-4">
             <Card className="overflow-hidden">
-              <div className="flex items-center justify-between border-b border-[#14171e] px-4 py-3">
+              <div className="flex items-center justify-between border-b border-[#e5dfd1] px-4 py-3">
                 <div className="flex items-center gap-2">
-                  <FileBarChart className="size-3.5 text-[#7c86ff]" />
-                  <h2 className="text-[12.5px] font-medium text-[#e2e5ee]">Run configuration</h2>
+                  <FileBarChart className="size-3.5 text-[#2b4b7e]" />
+                  <h2 className="text-[12.5px] font-medium text-[#1b1916]">Run configuration</h2>
                 </div>
-                <span className="font-mono text-[9.5px] uppercase tracking-[0.1em] text-[#5f6776]">
+                <span className="font-mono text-[9.5px] text-[#756f62]">
                   {config.browser}
                 </span>
               </div>
-              <dl className="grid grid-cols-2 gap-px bg-[#14171e]">
+              <dl className="grid grid-cols-2 gap-px bg-[#e5dfd1]">
                 {[
                   ['Pages', `${config.max_pages}`],
                   ['Depth', `${config.max_depth}`],
                   ['Links', `${config.max_links || 'off'}`],
                   ['Timeout', `${config.timeout_seconds}s`],
                 ].map(([label, value]) => (
-                  <div key={label} className="bg-[#0a0c11] px-4 py-2.5">
+                  <div key={label} className="bg-[#fdfcf8] px-4 py-2.5">
                     <dt className="mono-label">{label}</dt>
-                    <dd className="mt-1 tabular font-mono text-[12px] text-[#dcdfe8]">{value}</dd>
+                    <dd className="mt-1 tabular font-mono text-[12px] text-[#26231f]">{value}</dd>
                   </div>
                 ))}
               </dl>
-              <div className="flex flex-wrap items-center gap-1.5 border-t border-[#14171e] px-4 py-2.5">
+              <div className="flex flex-wrap items-center gap-1.5 border-t border-[#e5dfd1] px-4 py-2.5">
                 {[
                   ['Links', config.check_links],
                   ['Interactions', config.test_interactions],
@@ -583,10 +583,10 @@ export function NewTest() {
                   <span
                     key={String(label)}
                     className={cn(
-                      'rounded-[4px] border px-1.5 py-0.5 font-mono text-[9.5px] uppercase tracking-[0.06em]',
+                      'rounded-[3px] border px-1.5 py-0.5 text-[10px] ',
                       enabled
-                        ? 'border-[#7c86ff]/25 bg-[#7c86ff]/[0.08] text-[#bfc5ff]'
-                        : 'border-[#232936] text-[#4f5765] line-through',
+                        ? 'border-[#ddd6c8] bg-[#f7f4ed] text-[#4a453d]'
+                        : 'border-[#e5dfd1] text-[#b7ad9a] line-through',
                     )}
                   >
                     {label}
@@ -597,10 +597,10 @@ export function NewTest() {
 
             <Card className="p-4">
               <div className="flex items-center gap-2">
-                <ScanLine className="size-3.5 text-[#7c86ff]" />
-                <h2 className="text-[12.5px] font-medium text-[#e2e5ee]">What will be checked</h2>
+                <ScanLine className="size-3.5 text-[#2b4b7e]" />
+                <h2 className="text-[12.5px] font-medium text-[#1b1916]">What will be checked</h2>
               </div>
-              <ul className="mt-3 space-y-2.5 text-[11px] leading-relaxed text-[#8b93a3]">
+              <ul className="mt-3 space-y-2.5 text-[11px] leading-relaxed text-[#6b665c]">
                 {[
                   ['Page loading', 'HTTP status, title, visible content and load time.'],
                   ['Links', 'Deduplicated internal/external checks with SSRF-safe redirects.'],
@@ -612,15 +612,15 @@ export function NewTest() {
                   ['Report', 'Weighted health score, findings, AI or rule-based analysis, exports.'],
                 ].map(([title, detail]) => (
                   <li key={title} className="flex gap-2">
-                    <CircleDot className="mt-0.5 size-3 shrink-0 text-[#5f6776]" />
+                    <CircleDot className="mt-0.5 size-3 shrink-0 text-[#756f62]" />
                     <span>
-                      <span className="font-medium text-[#c3c9d6]">{title}.</span> {detail}
+                      <span className="font-medium text-[#3f3a33]">{title}.</span> {detail}
                     </span>
                   </li>
                 ))}
               </ul>
-              <div className="mt-4 flex items-start gap-2 rounded-lg border border-[#1b1e27] bg-[#0a0c11] p-2.5 text-[10px] leading-relaxed text-[#6b7280]">
-                <Ban className="mt-0.5 size-3.5 shrink-0 text-[#5f6776]" />
+              <div className="mt-4 flex items-start gap-2 rounded-lg border border-[#ddd6c8] bg-[#fdfcf8] p-2.5 text-[10px] leading-relaxed text-[#6b665c]">
+                <Ban className="mt-0.5 size-3.5 shrink-0 text-[#756f62]" />
                 Skipped actions are recorded with an explanation, never silently omitted.
               </div>
             </Card>

@@ -24,9 +24,9 @@ interface ToastContextValue {
 const ToastContext = createContext<ToastContextValue | null>(null)
 
 const TONE = {
-  success: { icon: CheckCircle2, className: 'text-emerald-300', bar: 'bg-emerald-400' },
-  error: { icon: AlertTriangle, className: 'text-rose-300', bar: 'bg-rose-400' },
-  info: { icon: Info, className: 'text-sky-300', bar: 'bg-sky-400' },
+  success: { icon: CheckCircle2, className: 'text-emerald-700', bar: 'bg-emerald-600' },
+  error: { icon: AlertTriangle, className: 'text-rose-700', bar: 'bg-rose-600' },
+  info: { icon: Info, className: 'text-sky-700', bar: 'bg-sky-600' },
 } as const
 
 export function ToastProvider({ children }: { children: ReactNode }) {
@@ -67,15 +67,15 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               <span className={`absolute left-0 top-0 h-full w-0.5 ${tone.bar}`} aria-hidden />
               <Icon className={`mt-0.5 size-4 shrink-0 ${tone.className}`} />
               <div className="min-w-0 flex-1">
-                <p className="text-sm font-medium text-[#f0f1f6]">{toast.title}</p>
+                <p className="text-sm font-medium text-[#171512]">{toast.title}</p>
                 {toast.message ? (
-                  <p className="mt-0.5 text-xs leading-relaxed text-[#8b93a3]">{toast.message}</p>
+                  <p className="mt-0.5 text-xs leading-relaxed text-[#6b665c]">{toast.message}</p>
                 ) : null}
               </div>
               <button
                 type="button"
                 onClick={() => dismiss(toast.id)}
-                className="focus-ring rounded p-0.5 text-[#6b7280] hover:text-[#dcdfe8]"
+                className="focus-ring rounded p-0.5 text-[#6b665c] hover:text-[#26231f]"
                 aria-label="Dismiss notification"
               >
                 <X className="size-3.5" />

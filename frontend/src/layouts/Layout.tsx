@@ -8,7 +8,6 @@ import {
   PlusCircle,
   Radar,
   Settings as SettingsIcon,
-  Terminal,
   X,
 } from 'lucide-react'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
@@ -56,32 +55,28 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
     }
   }, [])
 
+  const state = unreachable ? 'offline' : system?.browser_installed ? 'ready' : 'checking'
+
   return (
     <div className="flex h-full flex-col">
       <Link
         to="/"
         onClick={onNavigate}
-        className="focus-ring group flex items-center gap-2.5 rounded-lg px-1.5 py-1"
+        className="focus-ring group flex items-center gap-2.5 rounded-[4px] px-1 py-1"
       >
-        <span className="relative grid size-7 place-items-center rounded-[7px] border border-[#2b3140] bg-[#0f1219]">
-          <Radar className="size-3.5 text-[#a3abff]" />
-          <span className="absolute inset-0 rounded-[7px] bg-[#7c86ff]/10 blur-[6px]" aria-hidden />
+        <span className="grid size-7 place-items-center rounded-[3px] border border-[#d6cdbb] bg-[#fdfcf8]">
+          <Radar className="size-3.5 text-[#2b4b7e]" strokeWidth={1.7} />
         </span>
-        <span className="leading-none">
-          <span className="block text-[13.5px] font-semibold tracking-[-0.015em] text-[#f0f1f6]">
-            TestPilot<span className="text-[#7c86ff]">.ai</span>
-          </span>
-          <span className="mt-1 block font-mono text-[9px] uppercase tracking-[0.18em] text-[#5f6776]">
-            Website QA agent
-          </span>
+        <span className="serif block text-[17px] leading-none text-[#1b1916]">
+          Website<span className="text-[#2b4b7e]">-testpilot</span>
         </span>
       </Link>
 
-      <nav className="mt-7 space-y-6" aria-label="Main navigation">
-        {GROUPS.map((group) => (
-          <div key={group.label}>
-            <p className="mono-label mb-2 px-2">{group.label}</p>
-            <div className="space-y-0.5">
+      <nav className="mt-8" aria-label="Main navigation">
+        {GROUPS.map((group, index) => (
+          <div key={group.label} className={index > 0 ? 'mt-6' : undefined}>
+            <p className="mono-label mb-1.5 px-2">{group.label}</p>
+            <div>
               {group.items.map((item) => {
                 const Icon = item.icon
                 return (
@@ -92,24 +87,21 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
                     onClick={onNavigate}
                     className={({ isActive }) =>
                       cn(
-                        'focus-ring group relative flex h-8 items-center gap-2.5 rounded-md px-2 text-[12.5px] transition-colors',
+                        'focus-ring group relative flex h-8 items-center gap-2.5 rounded-[3px] px-2 text-[12.5px] transition-colors',
                         isActive
-                          ? 'bg-[#12151d] text-[#eef0f7]'
-                          : 'text-[#8b93a3] hover:bg-white/[0.03] hover:text-[#d6dae4]',
+                          ? 'bg-[#e9e3d5] font-medium text-[#1b1916]'
+                          : 'text-[#6b665c] hover:bg-[#1b1916]/[0.045] hover:text-[#26231f]',
                       )
                     }
                   >
                     {({ isActive }) => (
                       <>
-                        {isActive ? (
-                          <span className="absolute -left-2 top-1/2 h-4 w-[2px] -translate-y-1/2 rounded-full bg-[#7c86ff]" />
-                        ) : null}
                         <Icon
                           className={cn(
                             'size-[15px] shrink-0',
-                            isActive ? 'text-[#a3abff]' : 'text-[#5f6776] group-hover:text-[#8b93a3]',
+                            isActive ? 'text-[#1b1916]' : 'text-[#756f62] group-hover:text-[#57524a]',
                           )}
-                          strokeWidth={1.8}
+                          strokeWidth={1.7}
                         />
                         {item.label}
                       </>
@@ -122,41 +114,35 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         ))}
       </nav>
 
-      <div className="mt-auto space-y-3 pt-6">
-        <div className="rounded-lg border border-[#191d26] bg-[#0a0c11] p-2.5">
-          <div className="flex items-center justify-between">
-            <span className="mono-label">Engine</span>
-            <span className="flex items-center gap-1.5 font-mono text-[9.5px] uppercase tracking-wide text-[#7d8595]">
-              <span
-                className={cn(
-                  'size-[5px] rounded-full',
-                  unreachable ? 'bg-[#fb7185]' : system?.browser_installed ? 'bg-[#3ddc97] pulse-dot' : 'bg-[#f5c451]',
-                )}
-              />
-              {unreachable ? 'offline' : system?.browser_installed ? 'ready' : 'checking'}
-            </span>
-          </div>
-          <p className="mt-1.5 text-[10.5px] leading-relaxed text-[#626b7a]">
+      <div className="mt-auto space-y-2.5 border-t border-[#ddd6c8] pt-4">
+        <div className="flex items-center gap-2 px-1 text-[11px] text-[#6f6a5f]">
+          <span
+            className={cn(
+              'size-[5px] rounded-full',
+              unreachable ? 'bg-[#b3263c]' : system?.browser_installed ? 'bg-[#14805c]' : 'bg-[#8a6100]',
+            )}
+            aria-hidden
+          />
+          <span className="capitalize">{state}</span>
+          <span className="text-[#c3b9a6]" aria-hidden>
+            ·
+          </span>
+          <span className="truncate">
             {system
-              ? `${system.browser_engine} ${system.browser_version?.split('.')[0] ?? ''} · SQLite · ${system.executions_stored} runs`
-              : 'Checking backend and browser…'}
-          </p>
+              ? `${system.browser_engine} ${system.browser_version?.split('.')[0] ?? ''} · ${system.executions_stored} runs`
+              : 'checking backend…'}
+          </span>
         </div>
 
-        <div className="rounded-lg border border-[#191d26] bg-[#0a0c11] p-2.5">
-          <p className="flex items-center gap-1.5 font-mono text-[9.5px] uppercase tracking-[0.1em] text-[#7d8595]">
-            <Terminal className="size-3" /> Authorized targets only
-          </p>
-          <p className="mt-1 text-[10px] leading-relaxed text-[#5f6776]">
-            Private networks and destructive actions are blocked. Test sites you own.
-          </p>
-        </div>
+        <p className="px-1 text-[10.5px] leading-relaxed text-[#756f62]">
+          Private networks and destructive actions are blocked. Test sites you own.
+        </p>
 
         <a
           href="/api/docs"
           target="_blank"
           rel="noreferrer"
-          className="focus-ring flex items-center justify-between rounded-md px-1.5 py-1 font-mono text-[10px] uppercase tracking-wide text-[#5f6776] hover:text-[#a4abba]"
+          className="focus-ring inline-flex items-center gap-1 rounded-[3px] px-1 py-0.5 text-[11px] text-[#6f6a5f] underline decoration-[#c3b9a6] underline-offset-2 hover:text-[#1b1916]"
         >
           API reference
           <span aria-hidden>↗</span>
@@ -210,24 +196,22 @@ export function Layout() {
 
   return (
     <div className="relative min-h-screen">
-      <div className="ambient" aria-hidden />
-
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[236px] border-r border-[#14171e] bg-[#07080b]/85 px-3 py-4 backdrop-blur-xl lg:block">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-[228px] border-r border-[#ddd6c8] bg-[#f7f4ed] px-3 py-4 lg:block">
         <SidebarContent />
       </aside>
 
       {mobileOpen ? (
         <div className="fixed inset-0 z-40 lg:hidden">
           <div
-            className="absolute inset-0 bg-black/75 backdrop-blur-sm"
+            className="absolute inset-0 bg-[#1b1916]/35 backdrop-blur-[2px]"
             onClick={() => setMobileOpen(false)}
             aria-hidden
           />
-          <aside className="animate-in absolute inset-y-0 left-0 w-[268px] border-r border-[#1b1e27] bg-[#080a0e] px-3 py-4">
+          <aside className="animate-in absolute inset-y-0 left-0 w-[268px] border-r border-[#ddd6c8] bg-[#f7f4ed] px-3 py-4">
             <button
               type="button"
               onClick={() => setMobileOpen(false)}
-              className="focus-ring absolute right-3 top-3 rounded p-1 text-[#8b93a3]"
+              className="focus-ring absolute right-3 top-3 rounded-[3px] p-1 text-[#6f6a5f]"
               aria-label="Close navigation"
             >
               <X className="size-4" />
@@ -237,56 +221,56 @@ export function Layout() {
         </div>
       ) : null}
 
-      <div className="relative z-10 lg:pl-[236px]">
-        <header className="sticky top-0 z-20 border-b border-[#14171e] bg-[#06070a]/80 backdrop-blur-xl">
-          <div className="flex h-[52px] items-center gap-3 px-4 sm:px-6">
+      <div className="relative z-10 lg:pl-[228px]">
+        <header className="sticky top-0 z-20 border-b border-[#ddd6c8] bg-[#f1eee7]/90 backdrop-blur-sm">
+          <div className="flex h-[50px] items-center gap-3 px-4 sm:px-8">
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
-              className="focus-ring rounded-md border border-[#242936] p-1.5 text-[#a4abba] lg:hidden"
+              className="focus-ring rounded-[3px] border border-[#d6cdbb] p-1.5 text-[#57524a] lg:hidden"
               aria-label="Open navigation"
             >
               <Menu className="size-4" />
             </button>
 
-            <div className="flex items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.08em]">
-              <span className="text-[#5f6776]">Local workspace</span>
-              <span className="text-[#333a48]">/</span>
-              <span className="text-[#b7becb]">{currentTitle}</span>
+            <div className="flex items-center gap-2 text-[11.5px] text-[#756f62]">
+              <span>Local workspace</span>
+              <span aria-hidden>/</span>
+              <span className="text-[#4a453d]">{currentTitle}</span>
             </div>
 
             <div className="ml-auto flex items-center gap-1.5">
               <Link
                 to="/history?status=failed"
-                className="focus-ring relative rounded-md p-1.5 text-[#7d8595] transition-colors hover:bg-white/[0.04] hover:text-[#d6dae4]"
+                className="focus-ring relative rounded-[3px] p-1.5 text-[#6f6a5f] transition-colors hover:bg-[#1b1916]/[0.05] hover:text-[#1b1916]"
                 aria-label={failedCount ? `${failedCount} failed runs in history` : 'Notifications'}
                 title="Failed runs"
               >
-                <Bell className="size-[15px]" />
+                <Bell className="size-[15px]" strokeWidth={1.7} />
                 {failedCount ? (
-                  <span className="absolute right-1 top-1 size-1.5 rounded-full bg-[#fb7185] ring-2 ring-[#06070a]" />
+                  <span className="absolute right-1 top-1 size-1.5 rounded-full bg-[#b3263c] ring-2 ring-[#f1eee7]" />
                 ) : null}
               </Link>
 
-              <span className="mx-1 h-4 w-px bg-[#1b1e27]" aria-hidden />
+              <span className="mx-1 h-4 w-px bg-[#ddd6c8]" aria-hidden />
 
               <div className="relative" ref={profileRef}>
                 <button
                   type="button"
                   onClick={() => setProfileOpen((open) => !open)}
-                  className="focus-ring flex items-center gap-2 rounded-md py-1 pl-1 pr-1.5 transition-colors hover:bg-white/[0.04]"
+                  className="focus-ring flex items-center gap-2 rounded-[3px] py-1 pl-1 pr-1.5 transition-colors hover:bg-[#1b1916]/[0.05]"
                   aria-expanded={profileOpen}
                   aria-haspopup="menu"
                 >
-                  <span className="grid size-6 place-items-center rounded-[5px] border border-[#2b3140] bg-[#12151d] font-mono text-[10px] text-[#c3c9d6]">
+                  <span className="grid size-6 place-items-center rounded-[3px] border border-[#d6cdbb] bg-[#fdfcf8] text-[10px] font-medium text-[#4a453d]">
                     QA
                   </span>
-                  <span className="hidden text-[11.5px] text-[#a4abba] sm:block">QA Engineer</span>
-                  <ChevronDown className="size-3.5 text-[#5f6776]" />
+                  <span className="hidden text-[11.5px] text-[#57524a] sm:block">QA Engineer</span>
+                  <ChevronDown className="size-3.5 text-[#756f62]" />
                 </button>
                 {profileOpen ? (
                   <div
-                    className="animate-in absolute right-0 top-9 w-56 overflow-hidden rounded-lg border border-[#262b38] bg-[#0b0d12] p-1 shadow-[0_30px_80px_-30px_rgba(0,0,0,0.95)]"
+                    className="animate-in absolute right-0 top-9 w-56 overflow-hidden rounded-[4px] border border-[#ddd6c8] bg-[#fbf9f4] p-1 shadow-[0_16px_40px_-16px_rgba(27,25,22,0.28)]"
                     role="menu"
                   >
                     {[
@@ -297,7 +281,7 @@ export function Layout() {
                         key={item.to}
                         to={item.to}
                         role="menuitem"
-                        className="block rounded-md px-2.5 py-1.5 text-[11.5px] text-[#b7becb] hover:bg-white/[0.05] hover:text-[#eef0f7]"
+                        className="block rounded-[3px] px-2.5 py-1.5 text-[11.5px] text-[#4a453d] hover:bg-[#f0ece2] hover:text-[#1b1916]"
                       >
                         {item.label}
                       </Link>
@@ -307,11 +291,11 @@ export function Layout() {
                       target="_blank"
                       rel="noreferrer"
                       role="menuitem"
-                      className="block rounded-md px-2.5 py-1.5 text-[11.5px] text-[#b7becb] hover:bg-white/[0.05] hover:text-[#eef0f7]"
+                      className="block rounded-[3px] px-2.5 py-1.5 text-[11.5px] text-[#4a453d] hover:bg-[#f0ece2] hover:text-[#1b1916]"
                     >
                       Open API docs
                     </a>
-                    <p className="mt-1 border-t border-[#191d26] px-2.5 py-2 text-[10px] leading-relaxed text-[#5f6776]">
+                    <p className="mt-1 border-t border-[#e5dfd1] px-2.5 py-2 text-[10px] leading-relaxed text-[#756f62]">
                       Single-workspace deployment. Access control is provided by your reverse
                       proxy.
                     </p>
@@ -322,7 +306,7 @@ export function Layout() {
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-[1360px] px-4 py-6 sm:px-6 sm:py-7">
+        <main className="mx-auto w-full max-w-[1260px] px-4 py-7 sm:px-8 sm:py-9">
           <Outlet />
         </main>
       </div>
@@ -342,14 +326,12 @@ export function PageHeader({
   eyebrow?: string
 }) {
   return (
-    <div className="mb-6 flex flex-col gap-4 border-b border-[#14171e] pb-5 sm:flex-row sm:items-end sm:justify-between">
+    <div className="mb-7 flex flex-col gap-4 border-b border-[#ddd6c8] pb-5 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        {eyebrow ? <p className="mono-label mb-2 text-[#7c86ff]/80">{eyebrow}</p> : null}
-        <h1 className="text-[22px] font-semibold tracking-[-0.025em] text-[#f0f1f6] sm:text-[26px]">
-          {title}
-        </h1>
+        {eyebrow ? <p className="mb-1.5 text-[11.5px] text-[#756f62]">{eyebrow}</p> : null}
+        <h1 className="serif-title text-[34px] text-[#1b1916] sm:text-[40px]">{title}</h1>
         {description ? (
-          <p className="mt-1.5 max-w-2xl text-[11.5px] leading-relaxed text-[#7d8595]">
+          <p className="mt-2 max-w-2xl text-[12.5px] leading-relaxed text-[#6f6a5f]">
             {description}
           </p>
         ) : null}

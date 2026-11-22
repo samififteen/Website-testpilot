@@ -67,59 +67,59 @@ export interface Meta {
 export const STATUS_META: Record<TestStatus, Meta> = {
   pending: {
     label: 'Pending',
-    text: 'text-slate-300',
+    text: 'text-slate-700',
     bg: 'bg-slate-500/10',
     border: 'border-slate-500/30',
-    dot: 'bg-slate-400',
+    dot: 'bg-slate-600',
   },
   queued: {
     label: 'Queued',
-    text: 'text-slate-300',
+    text: 'text-slate-700',
     bg: 'bg-slate-500/10',
     border: 'border-slate-500/30',
-    dot: 'bg-slate-400',
+    dot: 'bg-slate-600',
   },
   running: {
     label: 'Running',
-    text: 'text-indigo-300',
+    text: 'text-indigo-700',
     bg: 'bg-indigo-500/10',
-    border: 'border-indigo-400/40',
-    dot: 'bg-indigo-400',
+    border: 'border-indigo-600/40',
+    dot: 'bg-indigo-600',
   },
   passed: {
     label: 'Passed',
-    text: 'text-emerald-300',
+    text: 'text-emerald-700',
     bg: 'bg-emerald-500/10',
-    border: 'border-emerald-400/30',
-    dot: 'bg-emerald-400',
+    border: 'border-emerald-600/30',
+    dot: 'bg-emerald-600',
   },
   failed: {
     label: 'Failed',
-    text: 'text-rose-300',
+    text: 'text-rose-700',
     bg: 'bg-rose-500/10',
-    border: 'border-rose-400/30',
-    dot: 'bg-rose-400',
+    border: 'border-rose-600/30',
+    dot: 'bg-rose-600',
   },
   warnings: {
     label: 'Warnings',
-    text: 'text-amber-300',
+    text: 'text-amber-700',
     bg: 'bg-amber-500/10',
-    border: 'border-amber-400/30',
-    dot: 'bg-amber-400',
+    border: 'border-amber-600/30',
+    dot: 'bg-amber-600',
   },
   cancelled: {
     label: 'Cancelled',
-    text: 'text-slate-400',
+    text: 'text-slate-600',
     bg: 'bg-slate-600/10',
     border: 'border-slate-600/40',
     dot: 'bg-slate-500',
   },
   error: {
     label: 'Error',
-    text: 'text-rose-300',
+    text: 'text-rose-700',
     bg: 'bg-rose-500/10',
-    border: 'border-rose-400/30',
-    dot: 'bg-rose-400',
+    border: 'border-rose-600/30',
+    dot: 'bg-rose-600',
   },
 }
 
@@ -129,55 +129,55 @@ export const RESULT_META: Record<ResultStatus, Meta> = {
   warning: { ...STATUS_META.warnings, label: 'Warning' },
   skipped: {
     label: 'Skipped',
-    text: 'text-[#a4abba]',
-    bg: 'bg-white/[0.03]',
+    text: 'text-[#57524a]',
+    bg: 'bg-[#1b1916]/[0.03]',
     border: 'border-[#3a4150]',
-    dot: 'bg-[#5f6776]',
+    dot: 'bg-[#8d877a]',
   },
   info: {
     label: 'Info',
-    text: 'text-sky-300',
+    text: 'text-sky-700',
     bg: 'bg-sky-500/10',
-    border: 'border-sky-400/30',
-    dot: 'bg-sky-400',
+    border: 'border-sky-600/30',
+    dot: 'bg-sky-600',
   },
 }
 
 export const SEVERITY_META: Record<Severity, Meta> = {
   critical: {
     label: 'Critical',
-    text: 'text-rose-300',
+    text: 'text-rose-700',
     bg: 'bg-rose-500/10',
-    border: 'border-rose-400/30',
-    dot: 'bg-rose-400',
+    border: 'border-rose-600/30',
+    dot: 'bg-rose-600',
   },
   high: {
     label: 'High',
-    text: 'text-orange-300',
+    text: 'text-orange-700',
     bg: 'bg-orange-500/10',
-    border: 'border-orange-400/30',
-    dot: 'bg-orange-400',
+    border: 'border-orange-600/30',
+    dot: 'bg-orange-600',
   },
   medium: {
     label: 'Medium',
-    text: 'text-amber-300',
+    text: 'text-amber-700',
     bg: 'bg-amber-500/10',
-    border: 'border-amber-400/30',
-    dot: 'bg-amber-400',
+    border: 'border-amber-600/30',
+    dot: 'bg-amber-600',
   },
   low: {
     label: 'Low',
-    text: 'text-sky-300',
+    text: 'text-sky-700',
     bg: 'bg-sky-500/10',
-    border: 'border-sky-400/30',
-    dot: 'bg-sky-400',
+    border: 'border-sky-600/30',
+    dot: 'bg-sky-600',
   },
   info: {
     label: 'Info',
-    text: 'text-slate-300',
+    text: 'text-slate-700',
     bg: 'bg-slate-500/10',
     border: 'border-slate-500/30',
-    dot: 'bg-slate-400',
+    dot: 'bg-slate-600',
   },
 }
 
@@ -186,8 +186,8 @@ export function scoreTone(score: number | null | undefined): {
   ring: string
   label: string
 } {
-  if (score === null || score === undefined) return { text: 'text-slate-400', ring: '#475569', label: 'No data' }
-  if (score >= 90) return { text: 'text-emerald-300', ring: '#34d399', label: 'Healthy' }
-  if (score >= 70) return { text: 'text-amber-300', ring: '#fbbf24', label: 'Needs attention' }
-  return { text: 'text-rose-300', ring: '#fb7185', label: 'At risk' }
+  if (score === null || score === undefined) return { text: 'text-slate-600', ring: '#475569', label: 'No data' }
+  if (score >= 90) return { text: 'text-emerald-700', ring: '#34d399', label: 'Healthy' }
+  if (score >= 70) return { text: 'text-amber-700', ring: '#fbbf24', label: 'Needs attention' }
+  return { text: 'text-rose-700', ring: '#b3263c', label: 'At risk' }
 }

@@ -32,7 +32,7 @@ import { AnimatedNumber } from '../components/AnimatedNumber'
 import { ScoreGauge } from '../components/ScoreGauge'
 import { Button, Card, EmptyState, Skeleton, StatusBadge, cn } from '../components/ui'
 
-const BAR_COLOURS = { passed: '#3ddc97', warnings: '#f5c451', failed: '#fb7185' }
+const BAR_COLOURS = { passed: '#14805c', warnings: '#8a6100', failed: '#b3263c' }
 
 function Metric({
   label,
@@ -57,10 +57,10 @@ function Metric({
           value={value}
           decimals={decimals}
           suffix={suffix}
-          className={cn('tabular text-[26px] font-medium leading-none tracking-[-0.03em]', tone ?? 'text-[#f0f1f6]')}
+          className={cn('serif-title tabular text-[32px]', tone ?? 'text-[#171512]')}
         />
       </p>
-      <p className="mt-1.5 text-[10.5px] leading-snug text-[#626b7a]">{hint}</p>
+      <p className="mt-1.5 text-[10.5px] leading-snug text-[#756f62]">{hint}</p>
     </div>
   )
 }
@@ -77,12 +77,12 @@ function HealthFact({
   tone?: string
 }) {
   return (
-    <div className="bg-[#0a0c11] px-3 py-2.5">
-      <dt className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.08em] text-[#626b7a]">
+    <div className="bg-[#fdfcf8] px-3 py-2.5">
+      <dt className="flex items-center gap-1.5 text-[11px] text-[#756f62]">
         {icon}
         {label}
       </dt>
-      <dd className={cn('mt-1 tabular text-[15px] font-medium capitalize', tone ?? 'text-[#e2e5ee]')}>
+      <dd className={cn('mt-1 tabular text-[15px] font-medium capitalize', tone ?? 'text-[#1b1916]')}>
         {value}
       </dd>
     </div>
@@ -118,9 +118,8 @@ export function Overview() {
   return (
     <div>
       <PageHeader
-        eyebrow="Control room"
         title="Overview"
-        description="Every number below is computed from stored test executions — no placeholders, no simulated runs."
+        description="Latest health score, activity over two weeks, and the runs behind it."
         actions={
           <>
             <Button
@@ -141,14 +140,14 @@ export function Overview() {
       />
 
       {error ? (
-        <Card className="mb-4 border-[#fb7185]/25 bg-[#fb7185]/[0.04] p-4">
-          <div className="flex items-center gap-2 text-[12.5px] text-[#fda4af]">
+        <Card className="mb-4 border-[#b3263c]/25 bg-[#b3263c]/[0.04] p-4">
+          <div className="flex items-center gap-2 text-[12.5px] text-[#a8233a]">
             <AlertTriangle className="size-4" />
             {error}
           </div>
-          <p className="mt-1.5 text-[11px] text-[#7d8595]">
+          <p className="mt-1.5 text-[11px] text-[#726c62]">
             Start the backend with{' '}
-            <code className="rounded bg-[#14171e] px-1 py-0.5 text-[#b7becb]">
+            <code className="rounded bg-[#e5dfd1] px-1 py-0.5 text-[#4a453d]">
               uvicorn app.main:app --port 8000
             </code>
             .
@@ -157,13 +156,12 @@ export function Overview() {
       ) : null}
 
       <div className="grid items-start gap-3 xl:grid-cols-[minmax(0,370px)_minmax(0,1fr)]">
-        <Card spotlight className="overflow-hidden">
+        <Card className="overflow-hidden">
           <div className="flex items-start justify-between gap-3 px-4 pt-4">
             <div>
-              <h2 className="text-[13px] font-medium text-[#e2e5ee]">Website health</h2>
+              <h2 className="text-[13px] font-medium text-[#1b1916]">Website health</h2>
               <p className="mono-label mt-1.5">Latest completed run</p>
             </div>
-            {health?.has_data ? <StatusBadge status="passed" /> : null}
           </div>
 
           {loading && !data ? (
@@ -174,33 +172,33 @@ export function Overview() {
           ) : health?.has_data ? (
             <div className="px-4 pb-4">
               <div className="mt-4 flex items-center gap-5">
-                <ScoreGauge score={health.health_score} size={162} />
+                <ScoreGauge score={health.health_score} width={186} />
                 <div className="min-w-0 space-y-1.5">
                   <p className={cn('text-[13px] font-medium', tone.text)}>{tone.label}</p>
-                  <p className="text-[11px] leading-relaxed text-[#7d8595]">
+                  <p className="text-[11px] leading-relaxed text-[#726c62]">
                     Weighted deduction from the checks that actually ran. Higher is better.
                   </p>
                 </div>
               </div>
 
-              <dl className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-[#1b1e27] bg-[#1b1e27]">
+              <dl className="mt-4 grid grid-cols-2 gap-px overflow-hidden rounded-[4px] border border-[#ddd6c8] bg-[#ddd6c8]">
                 <HealthFact
                   icon={<Link2Off className="size-3" />}
                   label="Broken links"
                   value={health.broken_links}
-                  tone={health.broken_links > 0 ? 'text-[#fda4af]' : undefined}
+                  tone={health.broken_links > 0 ? 'text-[#a8233a]' : undefined}
                 />
                 <HealthFact
                   icon={<Terminal className="size-3" />}
                   label="JS errors"
                   value={health.javascript_errors}
-                  tone={health.javascript_errors > 0 ? 'text-[#fda4af]' : undefined}
+                  tone={health.javascript_errors > 0 ? 'text-[#a8233a]' : undefined}
                 />
                 <HealthFact
                   icon={<AlertTriangle className="size-3" />}
                   label="Failed requests"
                   value={health.failed_requests}
-                  tone={health.failed_requests > 0 ? 'text-[#f5c451]' : undefined}
+                  tone={health.failed_requests > 0 ? 'text-[#8a6100]' : undefined}
                 />
                 <HealthFact
                   icon={<ShieldCheck className="size-3" />}
@@ -209,7 +207,7 @@ export function Overview() {
                 />
               </dl>
 
-              <p className="mt-3 text-[10px] leading-relaxed text-[#5f6776]">{health.explanation}</p>
+              <p className="mt-3 text-[11px] leading-relaxed text-[#756f62]">{health.explanation}</p>
             </div>
           ) : (
             <EmptyState
@@ -237,7 +235,7 @@ export function Overview() {
             </div>
           ) : stats ? (
             <>
-              <div className="grid grid-cols-2 divide-x divide-[#14171e] sm:grid-cols-4">
+              <div className="grid grid-cols-2 divide-x divide-[#e5dfd1] sm:grid-cols-4">
                 <Metric
                   label="Total tests"
                   value={stats.total_tests}
@@ -247,13 +245,13 @@ export function Overview() {
                   label="Successful"
                   value={stats.passed_tests}
                   hint="Passed every check"
-                  tone="text-[#5fe3ad]"
+                  tone="text-[#14805c]"
                 />
                 <Metric
                   label="Failed"
                   value={stats.failed_tests}
                   hint="Critical / high"
-                  tone="text-[#fda4af]"
+                  tone="text-[#a8233a]"
                 />
                 <Metric
                   label="Success rate"
@@ -261,48 +259,46 @@ export function Overview() {
                   suffix="%"
                   decimals={rateDecimals}
                   hint="Passed ÷ completed"
-                  tone="text-[#c3c9d6]"
+                  tone="text-[#3f3a33]"
                 />
               </div>
 
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-[#14171e] px-4 py-3">
-                <p className="flex items-center gap-2 text-[11px] text-[#7d8595]">
-                  <Timer className="size-3.5 text-[#5f6776]" />
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-[#e5dfd1] px-4 py-3">
+                <p className="flex items-center gap-2 text-[11px] text-[#726c62]">
+                  <Timer className="size-3.5 text-[#756f62]" />
                   Average duration
-                  <span className="tabular font-mono text-[11.5px] text-[#d6dae4]">
+                  <span className="tabular font-mono text-[11.5px] text-[#2e2a25]">
                     {formatDuration(stats.average_duration_ms)}
                   </span>
                 </p>
-                <p className="flex items-center gap-2 text-[11px] text-[#7d8595]">
-                  <Gauge className="size-3.5 text-[#5f6776]" />
+                <p className="flex items-center gap-2 text-[11px] text-[#726c62]">
+                  <Gauge className="size-3.5 text-[#756f62]" />
                   Avg health
-                  <span className="tabular font-mono text-[11.5px] text-[#d6dae4]">
+                  <span className="tabular font-mono text-[11.5px] text-[#2e2a25]">
                     {stats.average_health_score ?? '—'}
                   </span>
                 </p>
-                <p className="ml-auto text-[10.5px] text-[#626b7a]">
+                <p className="ml-auto text-[10.5px] text-[#756f62]">
                   {stats.last_run_at ? `Last run ${relativeTime(stats.last_run_at)}` : 'No runs recorded'}
                 </p>
               </div>
 
-              <div className="flex items-center gap-4 border-t border-[#14171e] px-4 py-2.5">
+              <div className="flex items-center gap-4 border-t border-[#e5dfd1] px-4 py-2.5">
                 {[
-                  { label: 'Passed', value: stats.passed_tests, className: 'text-[#5fe3ad]' },
-                  { label: 'Failed', value: stats.failed_tests, className: 'text-[#fda4af]' },
-                  { label: 'Warnings', value: stats.warning_tests, className: 'text-[#f4cd72]' },
+                  { label: 'Passed', value: stats.passed_tests, className: 'text-[#14805c]' },
+                  { label: 'Failed', value: stats.failed_tests, className: 'text-[#a8233a]' },
+                  { label: 'Warnings', value: stats.warning_tests, className: 'text-[#8a6100]' },
                 ].map((item) => (
                   <div key={item.label} className="flex items-baseline gap-1.5">
                     <span className={cn('tabular text-[13px] font-medium', item.className)}>
                       {item.value}
                     </span>
-                    <span className="font-mono text-[9.5px] uppercase tracking-[0.08em] text-[#5f6776]">
-                      {item.label}
-                    </span>
+                    <span className="text-[10.5px] text-[#756f62]">{item.label}</span>
                   </div>
                 ))}
                 <Link
                   to="/history"
-                  className="focus-ring ml-auto flex items-center gap-1 font-mono text-[10px] uppercase tracking-wide text-[#7d8595] hover:text-[#d6dae4]"
+                  className="focus-ring ml-auto flex items-center gap-1 text-[11px] text-[#726c62] underline decoration-[#c3b9a6] underline-offset-2 hover:text-[#1b1916]"
                 >
                   History <ArrowUpRight className="size-3" />
                 </Link>
@@ -312,15 +308,13 @@ export function Overview() {
         </Card>
 
         <Card className="overflow-hidden">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#14171e] px-4 py-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#e5dfd1] px-4 py-3">
           <div className="flex items-center gap-2">
-            <Activity className="size-3.5 text-[#7c86ff]" />
-            <h2 className="text-[12.5px] font-medium text-[#e2e5ee]">Test activity</h2>
-            <span className="font-mono text-[9.5px] uppercase tracking-[0.1em] text-[#5f6776]">
-              14 days
-            </span>
+            <Activity className="size-3.5 text-[#2b4b7e]" />
+            <h2 className="text-[12.5px] font-medium text-[#1b1916]">Test activity</h2>
+            <span className="text-[11px] text-[#756f62]">last 14 days</span>
           </div>
-          <div className="flex items-center gap-3 font-mono text-[9.5px] uppercase tracking-[0.06em] text-[#7d8595]">
+          <div className="flex items-center gap-3 text-[10.5px] capitalize text-[#726c62]">
             {Object.entries(BAR_COLOURS).map(([label, colour]) => (
               <span key={label} className="flex items-center gap-1.5">
                 <span className="size-1.5 rounded-[1px]" style={{ background: colour }} />
@@ -335,44 +329,44 @@ export function Overview() {
             <Skeleton className="h-52" />
           </div>
         ) : data && data.activity.some((point) => point.total > 0) ? (
-          <div className="h-[248px] w-full px-2 py-4">
+          <div className="h-[214px] w-full px-2 py-4">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data.activity} margin={{ top: 4, right: 8, left: -24, bottom: 0 }}>
-                <CartesianGrid stroke="#14171e" vertical={false} />
+                <CartesianGrid stroke="#e5dfd1" vertical={false} />
                 <XAxis
                   dataKey="date"
-                  tick={{ fill: '#5f6776', fontSize: 10, fontFamily: 'Geist Mono' }}
+                  tick={{ fill: '#756f62', fontSize: 10, fontFamily: 'Geist Mono' }}
                   tickFormatter={(value: string) => value.slice(5)}
-                  axisLine={{ stroke: '#1b1e27' }}
+                  axisLine={{ stroke: '#ddd6c8' }}
                   tickLine={false}
                   interval="preserveStartEnd"
                 />
                 <YAxis
                   allowDecimals={false}
-                  tick={{ fill: '#5f6776', fontSize: 10, fontFamily: 'Geist Mono' }}
+                  tick={{ fill: '#756f62', fontSize: 10, fontFamily: 'Geist Mono' }}
                   axisLine={false}
                   tickLine={false}
                 />
                 <Tooltip
-                  cursor={{ fill: 'rgba(255,255,255,0.03)' }}
+                  cursor={{ fill: 'rgba(27,25,22,0.04)' }}
                   contentStyle={{
-                    background: '#0b0d12',
-                    border: '1px solid #2a2f3d',
-                    borderRadius: 8,
+                    background: '#fdfcf8',
+                    border: '1px solid #ddd6c8',
+                    borderRadius: 4,
                     fontSize: 11,
-                    boxShadow: '0 20px 50px -20px rgba(0,0,0,0.9)',
+                    boxShadow: '0 12px 28px -16px rgba(27,25,22,0.35)',
                   }}
-                  labelStyle={{ color: '#b7becb', fontFamily: 'Geist Mono', fontSize: 10 }}
+                  labelStyle={{ color: '#4a453d', fontFamily: 'Geist Mono', fontSize: 10 }}
                   itemStyle={{ padding: 0 }}
                 />
-                <Bar dataKey="passed" name="Passed" stackId="a" fill={BAR_COLOURS.passed} barSize={18} />
-                <Bar dataKey="warnings" name="Warnings" stackId="a" fill={BAR_COLOURS.warnings} barSize={18} />
+                <Bar dataKey="passed" name="Passed" stackId="a" fill={BAR_COLOURS.passed} barSize={22} />
+                <Bar dataKey="warnings" name="Warnings" stackId="a" fill={BAR_COLOURS.warnings} barSize={22} />
                 <Bar
                   dataKey="failed"
                   name="Failed"
                   stackId="a"
                   fill={BAR_COLOURS.failed}
-                  barSize={18}
+                  barSize={22}
                   radius={[2, 2, 0, 0]}
                 />
               </BarChart>
@@ -397,14 +391,14 @@ export function Overview() {
       </div>
 
       <Card className="mt-3 overflow-hidden">
-        <div className="flex items-center justify-between border-b border-[#14171e] px-4 py-3">
+        <div className="flex items-center justify-between border-b border-[#e5dfd1] px-4 py-3">
           <div className="flex items-center gap-2">
-            <FileBarChart className="size-3.5 text-[#7c86ff]" />
-            <h2 className="text-[12.5px] font-medium text-[#e2e5ee]">Recent test runs</h2>
+            <FileBarChart className="size-3.5 text-[#2b4b7e]" />
+            <h2 className="text-[12.5px] font-medium text-[#1b1916]">Recent test runs</h2>
           </div>
           <Link
             to="/history"
-            className="focus-ring flex items-center gap-1 font-mono text-[10px] uppercase tracking-wide text-[#7d8595] hover:text-[#d6dae4]"
+            className="focus-ring flex items-center gap-1 font-mono text-[10px] text-[#726c62] hover:text-[#2e2a25]"
           >
             All runs <ArrowUpRight className="size-3" />
           </Link>
@@ -420,11 +414,11 @@ export function Overview() {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[780px] text-left text-[12px]">
               <thead>
-                <tr className="border-b border-[#14171e]">
+                <tr className="border-b border-[#e5dfd1]">
                   {['Website', 'Status', 'Checks', 'Duration', 'Run at', ''].map((label) => (
                     <th
                       key={label}
-                      className="px-4 py-2 font-mono text-[9.5px] font-normal uppercase tracking-[0.1em] text-[#5f6776]"
+                      className="px-4 py-2 font-mono text-[9.5px] font-normal text-[#756f62]"
                     >
                       {label}
                     </th>
@@ -435,14 +429,14 @@ export function Overview() {
                 {data.recent.map((run) => (
                   <tr
                     key={run.id}
-                    className="group border-b border-[#11141b] transition-colors last:border-0 hover:bg-white/[0.018]"
+                    className="group border-b border-[#f4f1e9] transition-colors last:border-0 hover:bg-[#1b1916]/[0.018]"
                   >
                     <td className="px-4 py-2.5">
                       <Link to={`/reports/${run.id}`} className="block max-w-[340px]">
-                        <span className="block truncate font-medium text-[#dcdfe8] group-hover:text-white">
+                        <span className="block truncate font-medium text-[#26231f] group-hover:text-white">
                           {run.page_title || shortUrl(run.url)}
                         </span>
-                        <span className="mt-0.5 block truncate font-mono text-[10px] text-[#5f6776]">
+                        <span className="mt-0.5 block truncate font-mono text-[10px] text-[#756f62]">
                           {run.url}
                         </span>
                       </Link>
@@ -452,23 +446,23 @@ export function Overview() {
                     </td>
                     <td className="px-4 py-2.5">
                       <span className="tabular font-mono text-[10.5px]">
-                        <span className="text-[#5fe3ad]">{run.counts.passed}</span>
-                        <span className="px-1 text-[#333a48]">/</span>
-                        <span className="text-[#fda4af]">{run.counts.failed}</span>
-                        <span className="px-1 text-[#333a48]">/</span>
-                        <span className="text-[#f4cd72]">{run.counts.warnings}</span>
+                        <span className="text-[#14805c]">{run.counts.passed}</span>
+                        <span className="px-1 text-[#b7ad9a]">/</span>
+                        <span className="text-[#a8233a]">{run.counts.failed}</span>
+                        <span className="px-1 text-[#b7ad9a]">/</span>
+                        <span className="text-[#8a6100]">{run.counts.warnings}</span>
                       </span>
                     </td>
-                    <td className="px-4 py-2.5 tabular font-mono text-[10.5px] text-[#8b93a3]">
+                    <td className="px-4 py-2.5 tabular font-mono text-[10.5px] text-[#6b665c]">
                       {formatDuration(run.duration_ms)}
                     </td>
-                    <td className="px-4 py-2.5 text-[10.5px] text-[#6b7280]">
+                    <td className="px-4 py-2.5 text-[10.5px] text-[#6b665c]">
                       {formatDate(run.created_at)}
                     </td>
                     <td className="px-4 py-2.5 text-right">
                       <Link
                         to={`/reports/${run.id}`}
-                        className="focus-ring inline-flex size-6 items-center justify-center rounded-md border border-transparent text-[#5f6776] transition-colors group-hover:border-[#2a2f3d] group-hover:text-[#d6dae4]"
+                        className="focus-ring inline-flex size-6 items-center justify-center rounded-md border border-transparent text-[#756f62] transition-colors group-hover:border-[#c3b9a6] group-hover:text-[#2e2a25]"
                         aria-label={`Open report for ${run.url}`}
                       >
                         <ArrowUpRight className="size-3.5" />
@@ -496,10 +490,10 @@ export function Overview() {
       </Card>
 
       {(stats?.warning_tests ?? 0) > 0 || (stats?.failed_tests ?? 0) > 0 ? (
-        <p className="mt-3 flex items-center gap-1.5 text-[10.5px] text-[#5f6776]">
-          <XCircle className="size-3 text-[#fda4af]" />
+        <p className="mt-3 flex items-center gap-1.5 text-[10.5px] text-[#756f62]">
+          <XCircle className="size-3 text-[#a8233a]" />
           Failing runs never overwrite history — re-run a test to produce a fresh execution.
-          <CheckCircle2 className="ml-2 size-3 text-[#5fe3ad]" />
+          <CheckCircle2 className="ml-2 size-3 text-[#14805c]" />
           Scores update only from real checks.
         </p>
       ) : null}

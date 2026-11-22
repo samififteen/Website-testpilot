@@ -123,7 +123,7 @@ export function Report() {
   if (error && !data) {
     return (
       <Card className="p-6">
-        <div className="flex items-center gap-2 text-sm text-rose-200">
+        <div className="flex items-center gap-2 text-sm text-rose-800">
           <AlertTriangle className="size-4" /> {error}
         </div>
         <div className="mt-4 flex gap-2">
@@ -154,7 +154,7 @@ export function Report() {
       <div className="flex items-center justify-between">
         <Link
           to="/history"
-          className="focus-ring inline-flex items-center gap-1.5 text-[11px] text-[#8b93a3] hover:text-[#dcdfe8]"
+          className="focus-ring inline-flex items-center gap-1.5 text-[11px] text-[#6b665c] hover:text-[#26231f]"
         >
           <ArrowLeft className="size-3.5" /> Back to history
         </Link>
@@ -185,12 +185,12 @@ export function Report() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-lg font-semibold tracking-tight text-[#f0f1f6]">
+              <h1 className="text-lg font-semibold tracking-tight text-[#171512]">
                 {execution.name || execution.page_title || shortUrl(execution.url)}
               </h1>
               <StatusBadge status={execution.status} />
               {isActive ? (
-                <span className="flex items-center gap-1 text-[11px] text-indigo-300">
+                <span className="flex items-center gap-1 text-[11px] text-indigo-700">
                   <Loader2 className="size-3 animate-spin" /> live
                 </span>
               ) : null}
@@ -199,30 +199,30 @@ export function Report() {
               href={execution.url}
               target="_blank"
               rel="noreferrer noopener"
-              className="mt-1 inline-flex items-center gap-1 break-all text-xs text-[#8b93a3] hover:text-indigo-200"
+              className="mt-1 inline-flex items-center gap-1 break-all text-xs text-[#6b665c] hover:text-indigo-800"
             >
               {execution.url} <ExternalLink className="size-3" />
             </a>
-            <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-[#6b7280]">
+            <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-[#6b665c]">
               <span>
-                Execution <span className="font-mono text-[#8b93a3]">{execution.id}</span>
+                Execution <span className="font-mono text-[#6b665c]">{execution.id}</span>
               </span>
               <span>Started {formatDateTime(execution.started_at ?? execution.created_at)}</span>
               <span>Duration {formatDuration(execution.duration_ms)}</span>
               {execution.page_title ? <span>Title “{execution.page_title}”</span> : null}
             </div>
             {execution.error_message ? (
-              <p className="mt-2 rounded-lg border border-rose-400/20 bg-rose-500/5 px-2.5 py-1.5 text-[11px] text-rose-200">
+              <p className="mt-2 rounded-lg border border-rose-600/20 bg-rose-500/5 px-2.5 py-1.5 text-[11px] text-rose-800">
                 {execution.error_message}
               </p>
             ) : null}
           </div>
-          <div className="flex shrink-0 items-center gap-3 rounded-xl border border-[#1b1e27] bg-[#0a0c11] px-3 py-2">
+          <div className="flex shrink-0 items-center gap-3 rounded-xl border border-[#ddd6c8] bg-[#fdfcf8] px-3 py-2">
             <div className="text-right">
-              <p className="text-[10px] uppercase tracking-wide text-[#6b7280]">Health score</p>
+              <p className="text-[10px] text-[#6b665c]">Health score</p>
               <p className={cn('text-xl font-semibold', tone.text)}>
                 {execution.health_score ?? '—'}
-                <span className="text-[11px] text-[#5f6776]">/100</span>
+                <span className="text-[11px] text-[#756f62]">/100</span>
               </p>
               <p className={cn('text-[10px]', tone.text)}>{tone.label}</p>
             </div>
@@ -232,20 +232,20 @@ export function Report() {
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {[
-          ['Passed', counts.passed, 'text-emerald-300'],
-          ['Failed', counts.failed, 'text-rose-300'],
-          ['Warnings', counts.warnings, 'text-amber-300'],
-          ['Skipped', counts.skipped, 'text-[#8b93a3]'],
+          ['Passed', counts.passed, 'text-emerald-700'],
+          ['Failed', counts.failed, 'text-rose-700'],
+          ['Warnings', counts.warnings, 'text-amber-700'],
+          ['Skipped', counts.skipped, 'text-[#6b665c]'],
         ].map(([label, value, color]) => (
           <Card key={String(label)} className="p-3.5">
-            <p className="text-[10px] uppercase tracking-wide text-[#6b7280]">{label}</p>
+            <p className="text-[10px] text-[#6b665c]">{label}</p>
             <p className={cn('mt-1 text-xl font-semibold', color as string)}>{value}</p>
           </Card>
         ))}
       </div>
 
       <Card className="overflow-hidden">
-        <div className="flex flex-col gap-2 border-b border-[#14171e] p-3 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-2 border-b border-[#e5dfd1] p-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap gap-1">
             {TABS.map((item) => {
               const amount =
@@ -262,11 +262,11 @@ export function Report() {
                   className={cn(
                     'focus-ring rounded-lg px-2.5 py-1.5 text-[11px] transition-colors',
                     tab === item.key
-                      ? 'bg-indigo-500/15 text-indigo-200 shadow-[inset_0_0_0_1px_rgba(99,102,241,0.3)]'
-                      : 'text-[#8b93a3] hover:bg-white/5 hover:text-[#dcdfe8]',
+                      ? 'bg-indigo-500/15 text-indigo-800 shadow-[inset_0_0_0_1px_rgba(99,102,241,0.3)]'
+                      : 'text-[#6b665c] hover:bg-white/5 hover:text-[#26231f]',
                   )}
                 >
-                  {item.label} <span className="text-[#6b7280]">{amount}</span>
+                  {item.label} <span className="text-[#6b665c]">{amount}</span>
                 </button>
               )
             })}
@@ -296,8 +296,8 @@ export function Report() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[820px] text-left text-xs">
-              <thead className="text-[10px] uppercase tracking-wide text-[#6b7280]">
-                <tr className="border-b border-[#14171e]">
+              <thead className="text-[10px] text-[#6b665c]">
+                <tr className="border-b border-[#e5dfd1]">
                   <th className="px-4 py-2.5 font-medium">Test</th>
                   <th className="px-3 py-2.5 font-medium">Category</th>
                   <th className="px-3 py-2.5 font-medium">Status</th>
@@ -308,24 +308,24 @@ export function Report() {
               </thead>
               <tbody>
                 {filtered.map((result) => (
-                  <tr key={result.id} className="border-b border-[#11141b] last:border-0 hover:bg-white/[0.02]">
+                  <tr key={result.id} className="border-b border-[#f4f1e9] last:border-0 hover:bg-[#1b1916]/[0.02]">
                     <td className="max-w-[280px] px-4 py-2.5">
-                      <p className="truncate font-medium text-[#dcdfe8]">{result.test_name}</p>
-                      <p className="truncate text-[11px] text-[#6b7280]">{result.description}</p>
+                      <p className="truncate font-medium text-[#26231f]">{result.test_name}</p>
+                      <p className="truncate text-[11px] text-[#6b665c]">{result.description}</p>
                     </td>
-                    <td className="px-3 py-2.5 text-[#8b93a3]">{result.category}</td>
+                    <td className="px-3 py-2.5 text-[#6b665c]">{result.category}</td>
                     <td className="px-3 py-2.5">
                       <ResultBadge status={result.status} />
                     </td>
                     <td className="px-3 py-2.5">
                       <SeverityBadge severity={result.severity} />
                     </td>
-                    <td className="px-3 py-2.5 text-[#6b7280]">{formatDuration(result.duration_ms)}</td>
+                    <td className="px-3 py-2.5 text-[#6b665c]">{formatDuration(result.duration_ms)}</td>
                     <td className="px-4 py-2.5 text-right">
                       <button
                         type="button"
                         onClick={() => setDetail(result)}
-                        className="focus-ring inline-flex items-center gap-1 rounded-md border border-[#262b38] px-2 py-1 text-[11px] text-[#c3c9d6] hover:border-indigo-400/40 hover:text-indigo-200"
+                        className="focus-ring inline-flex items-center gap-1 rounded-md border border-[#d6cdbb] px-2 py-1 text-[11px] text-[#3f3a33] hover:border-indigo-600/40 hover:text-indigo-800"
                       >
                         Open <ChevronDown className="size-3" />
                       </button>
@@ -340,14 +340,14 @@ export function Report() {
 
       <Card className="p-4 sm:p-5">
         <div className="flex items-center gap-2">
-          <Wand2 className="size-4 text-indigo-300" />
-          <h2 className="text-sm font-semibold text-[#f0f1f6]">Analysis</h2>
+          <Wand2 className="size-4 text-indigo-700" />
+          <h2 className="text-sm font-semibold text-[#171512]">Analysis</h2>
           <span
             className={cn(
               'ml-auto inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px]',
               isAi
-                ? 'border-violet-400/30 bg-violet-500/10 text-violet-200'
-                : 'border-[#262b38] bg-[#11111a] text-[#8b93a3]',
+                ? 'border-violet-600/30 bg-violet-500/10 text-violet-800'
+                : 'border-[#d6cdbb] bg-[#f7f4ed] text-[#6b665c]',
             )}
           >
             {isAi ? <Sparkles className="size-3" /> : <Bot className="size-3" />}
@@ -357,7 +357,7 @@ export function Report() {
           </span>
         </div>
 
-        <p className="mt-2 text-[10px] leading-relaxed text-[#6b7280]">
+        <p className="mt-2 text-[10px] leading-relaxed text-[#6b665c]">
           Facts below come only from the executed checks stored for this run. Suggested fixes and
           recommendations are{' '}
           {isAi ? 'AI-generated guidance' : 'generated by local rules'}
@@ -365,29 +365,29 @@ export function Report() {
         </p>
 
         {analysis.error ? (
-          <p className="mt-2 rounded-lg border border-amber-400/20 bg-amber-500/5 px-2.5 py-1.5 text-[11px] text-amber-200">
+          <p className="mt-2 rounded-lg border border-amber-600/20 bg-amber-500/5 px-2.5 py-1.5 text-[11px] text-amber-800">
             {analysis.error}
           </p>
         ) : null}
 
         <div className="mt-3 grid gap-3 lg:grid-cols-[1.5fr_1fr]">
           <div className="space-y-3">
-            <div className="rounded-xl border border-[#1b1e27] bg-[#0a0c11] p-3.5">
-              <p className="text-[10px] uppercase tracking-wide text-[#6b7280]">Executive summary</p>
-              <p className="mt-1.5 text-xs leading-relaxed text-[#c3c9d6]">
+            <div className="rounded-xl border border-[#ddd6c8] bg-[#fdfcf8] p-3.5">
+              <p className="text-[10px] text-[#6b665c]">Executive summary</p>
+              <p className="mt-1.5 text-xs leading-relaxed text-[#3f3a33]">
                 {analysis.executive_summary || 'No summary was produced for this run.'}
               </p>
             </div>
             {analysis.developer_explanations.length > 0 ? (
-              <div className="rounded-xl border border-[#1b1e27] bg-[#0a0c11] p-3.5">
-                <p className="text-[10px] uppercase tracking-wide text-[#6b7280]">
+              <div className="rounded-xl border border-[#ddd6c8] bg-[#fdfcf8] p-3.5">
+                <p className="text-[10px] text-[#6b665c]">
                   Developer explanations
                 </p>
                 <ul className="mt-2 space-y-2">
                   {analysis.developer_explanations.map((item) => (
                     <li key={item.issue} className="text-xs leading-relaxed">
-                      <span className="font-medium text-[#dcdfe8]">{item.issue}: </span>
-                      <span className="text-[#8b93a3]">{item.explanation}</span>
+                      <span className="font-medium text-[#26231f]">{item.issue}: </span>
+                      <span className="text-[#6b665c]">{item.explanation}</span>
                     </li>
                   ))}
                 </ul>
@@ -395,28 +395,28 @@ export function Report() {
             ) : null}
           </div>
           <div className="space-y-3">
-            <div className="rounded-xl border border-[#1b1e27] bg-[#0a0c11] p-3.5">
-              <p className="flex items-center gap-1.5 text-[10px] uppercase tracking-wide text-[#6b7280]">
+            <div className="rounded-xl border border-[#ddd6c8] bg-[#fdfcf8] p-3.5">
+              <p className="flex items-center gap-1.5 text-[10px] text-[#6b665c]">
                 <AlertTriangle className="size-3" /> Risk assessment
               </p>
-              <p className="mt-1.5 text-xs leading-relaxed text-[#c3c9d6]">
+              <p className="mt-1.5 text-xs leading-relaxed text-[#3f3a33]">
                 {analysis.risk_assessment || 'No risk assessment available.'}
               </p>
             </div>
-            <div className="rounded-xl border border-[#1b1e27] bg-[#0a0c11] p-3.5">
-              <p className="flex items-center gap-1.5 text-[10px] uppercase tracking-wide text-[#6b7280]">
+            <div className="rounded-xl border border-[#ddd6c8] bg-[#fdfcf8] p-3.5">
+              <p className="flex items-center gap-1.5 text-[10px] text-[#6b665c]">
                 <Lightbulb className="size-3" /> Recommendations
               </p>
               <ul className="mt-2 space-y-1.5">
                 {analysis.recommendations.length ? (
                   analysis.recommendations.map((item) => (
-                    <li key={item} className="flex gap-1.5 text-xs leading-relaxed text-[#8b93a3]">
-                      <span className="mt-1 size-1 shrink-0 rounded-full bg-indigo-400" />
+                    <li key={item} className="flex gap-1.5 text-xs leading-relaxed text-[#6b665c]">
+                      <span className="mt-1 size-1 shrink-0 rounded-full bg-indigo-600" />
                       {item}
                     </li>
                   ))
                 ) : (
-                  <li className="text-xs text-[#6b7280]">No recommendations returned.</li>
+                  <li className="text-xs text-[#6b665c]">No recommendations returned.</li>
                 )}
               </ul>
             </div>
@@ -426,13 +426,13 @@ export function Report() {
 
       <Card className="p-4 sm:p-5">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-[#f0f1f6]">Findings</h2>
-          <span className="text-[11px] text-[#6b7280]">
+          <h2 className="text-sm font-semibold text-[#171512]">Findings</h2>
+          <span className="text-[11px] text-[#6b665c]">
             {analysis.findings.length} issue{analysis.findings.length === 1 ? '' : 's'}
           </span>
         </div>
         {analysis.findings.length === 0 ? (
-          <p className="rounded-lg border border-[#1b1e27] bg-[#0a0c11] p-3 text-xs text-[#8b93a3]">
+          <p className="rounded-lg border border-[#ddd6c8] bg-[#fdfcf8] p-3 text-xs text-[#6b665c]">
             No issues were detected by the checks that actually ran.
           </p>
         ) : (
@@ -440,31 +440,31 @@ export function Report() {
             {analysis.findings.map((finding, index) => (
               <div
                 key={`${finding.title}-${index}`}
-                className="rounded-xl border border-[#1b1e27] bg-[#0a0c11] p-3"
+                className="rounded-xl border border-[#ddd6c8] bg-[#fdfcf8] p-3"
               >
                 <div className="flex flex-wrap items-center gap-2">
                   <SeverityBadge severity={finding.severity} />
-                  <p className="text-xs font-medium text-[#dcdfe8]">{finding.title}</p>
-                  <span className="rounded bg-[#14171e] px-1.5 py-0.5 text-[10px] text-[#6b7280]">
+                  <p className="text-xs font-medium text-[#26231f]">{finding.title}</p>
+                  <span className="rounded bg-[#e5dfd1] px-1.5 py-0.5 text-[10px] text-[#6b665c]">
                     {finding.category}
                   </span>
                 </div>
-                <p className="mt-1.5 text-[11px] leading-relaxed text-[#8b93a3]">
+                <p className="mt-1.5 text-[11px] leading-relaxed text-[#6b665c]">
                   {finding.description}
                 </p>
                 {finding.evidence ? (
-                  <pre className="mt-2 max-h-32 overflow-auto rounded-lg border border-[#191d26] bg-[#0a0a11] p-2 text-[10px] leading-relaxed text-[#6b7280]">
+                  <pre className="mt-2 max-h-32 overflow-auto rounded-lg border border-[#e5dfd1] bg-[#fbf9f4] p-2 text-[10px] leading-relaxed text-[#6b665c]">
                     {finding.evidence}
                   </pre>
                 ) : null}
-                <p className="mt-2 text-[11px] text-indigo-200/90">
-                  <span className="text-[#6b7280]">
+                <p className="mt-2 text-[11px] text-indigo-800/90">
+                  <span className="text-[#6b665c]">
                     {isAi ? 'AI-suggested fix: ' : 'Suggested fix: '}
                   </span>
                   {finding.suggested_fix}
                 </p>
                 {finding.url ? (
-                  <p className="mt-1 break-all font-mono text-[10px] text-[#5f6776]">{finding.url}</p>
+                  <p className="mt-1 break-all font-mono text-[10px] text-[#756f62]">{finding.url}</p>
                 ) : null}
               </div>
             ))}
@@ -474,8 +474,8 @@ export function Report() {
 
       <Card className="p-4 sm:p-5">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-sm font-semibold text-[#f0f1f6]">Screenshots</h2>
-          <span className="text-[11px] text-[#6b7280]">{data.screenshots.length} stored</span>
+          <h2 className="text-sm font-semibold text-[#171512]">Screenshots</h2>
+          <span className="text-[11px] text-[#6b665c]">{data.screenshots.length} stored</span>
         </div>
         {data.screenshots.length === 0 ? (
           <EmptyState
@@ -492,7 +492,7 @@ export function Report() {
                   key={shot.id}
                   type="button"
                   onClick={() => setViewingShot(shot)}
-                  className="focus-ring group overflow-hidden rounded-xl border border-[#1b1e27] bg-[#0a0c11] text-left"
+                  className="focus-ring group overflow-hidden rounded-xl border border-[#ddd6c8] bg-[#fdfcf8] text-left"
                 >
                   <img
                     src={shot.view_url}
@@ -501,10 +501,10 @@ export function Report() {
                     loading="lazy"
                   />
                   <div className="flex items-center justify-between gap-2 px-2.5 py-2">
-                    <span className="text-[10px] uppercase tracking-wide text-[#8b93a3]">
+                    <span className="text-[10px] text-[#6b665c]">
                       {shot.screenshot_type.replace('_', ' ')}
                     </span>
-                    <span className="truncate text-[10px] text-[#5f6776]">
+                    <span className="truncate text-[10px] text-[#756f62]">
                       {linked ? linked.test_name : 'Page capture'}
                     </span>
                   </div>
@@ -515,8 +515,8 @@ export function Report() {
         )}
       </Card>
 
-      <Card className="p-4 text-[11px] leading-relaxed text-[#6b7280]">
-        <p className="font-medium text-[#c3c9d6]">How this health score was computed</p>
+      <Card className="p-4 text-[11px] leading-relaxed text-[#6b665c]">
+        <p className="font-medium text-[#3f3a33]">How this health score was computed</p>
         <p className="mt-1">{health.explanation}</p>
       </Card>
 
@@ -526,26 +526,26 @@ export function Report() {
             <div className="flex flex-wrap items-center gap-2">
               <ResultBadge status={detail.status} />
               <SeverityBadge severity={detail.severity} />
-              <span className="rounded bg-[#14171e] px-1.5 py-0.5 text-[10px] text-[#8b93a3]">
+              <span className="rounded bg-[#e5dfd1] px-1.5 py-0.5 text-[10px] text-[#6b665c]">
                 {detail.category}
               </span>
-              <span className="text-[10px] text-[#6b7280]">{formatDuration(detail.duration_ms)}</span>
+              <span className="text-[10px] text-[#6b665c]">{formatDuration(detail.duration_ms)}</span>
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-wide text-[#6b7280]">Description</p>
-              <p className="mt-1 leading-relaxed text-[#c3c9d6]">{detail.description}</p>
+              <p className="text-[10px] text-[#6b665c]">Description</p>
+              <p className="mt-1 leading-relaxed text-[#3f3a33]">{detail.description}</p>
             </div>
             {detail.error_details ? (
               <div>
-                <p className="text-[10px] uppercase tracking-wide text-[#6b7280]">Evidence</p>
-                <pre className="mt-1 max-h-72 overflow-auto rounded-lg border border-[#191d26] bg-[#0a0a11] p-2.5 text-[10px] leading-relaxed text-[#8b93a3]">
+                <p className="text-[10px] text-[#6b665c]">Evidence</p>
+                <pre className="mt-1 max-h-72 overflow-auto rounded-lg border border-[#e5dfd1] bg-[#fbf9f4] p-2.5 text-[10px] leading-relaxed text-[#6b665c]">
                   {detail.error_details}
                 </pre>
               </div>
             ) : null}
             {detail.url ? (
-              <p className="break-all text-[10px] text-[#6b7280]">
-                Target: <span className="font-mono text-[#8b93a3]">{detail.url}</span>
+              <p className="break-all text-[10px] text-[#6b665c]">
+                Target: <span className="font-mono text-[#6b665c]">{detail.url}</span>
               </p>
             ) : null}
             {detail.screenshot_ids.length > 0 ? (
@@ -560,14 +560,14 @@ export function Report() {
                         setDetail(null)
                         setViewingShot(shot)
                       }}
-                      className="focus-ring overflow-hidden rounded-lg border border-[#262b38]"
+                      className="focus-ring overflow-hidden rounded-lg border border-[#d6cdbb]"
                     >
                       <img src={shot.view_url} alt="Related screenshot" className="h-20 w-32 object-cover object-top" />
                     </button>
                   ))}
               </div>
             ) : null}
-            <p className="text-[10px] text-[#5f6776]">
+            <p className="text-[10px] text-[#756f62]">
               Recorded {formatDateTime(detail.finished_at ?? detail.created_at)}
             </p>
           </div>
@@ -580,21 +580,21 @@ export function Report() {
             <img
               src={viewingShot.view_url}
               alt={`Full ${viewingShot.screenshot_type} screenshot`}
-              className="max-h-[65vh] w-full rounded-lg border border-[#1b1e27] object-contain"
+              className="max-h-[65vh] w-full rounded-lg border border-[#ddd6c8] object-contain"
             />
-            <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-[#6b7280]">
+            <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-[#6b665c]">
               <span className="break-all">{viewingShot.page_url ?? execution.url}</span>
               <a
                 href={viewingShot.download_url}
                 download
-                className="focus-ring inline-flex items-center gap-1 text-indigo-200 hover:text-indigo-100"
+                className="focus-ring inline-flex items-center gap-1 text-indigo-800 hover:text-indigo-100"
               >
                 <Download className="size-3.5" /> Download PNG
               </a>
             </div>
             {shotOf(viewingShot) ? (
-              <p className="text-[11px] text-[#8b93a3]">
-                Associated check: <span className="text-[#dcdfe8]">{shotOf(viewingShot)?.test_name}</span>
+              <p className="text-[11px] text-[#6b665c]">
+                Associated check: <span className="text-[#26231f]">{shotOf(viewingShot)?.test_name}</span>
               </p>
             ) : null}
           </div>
