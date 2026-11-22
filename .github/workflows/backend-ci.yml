@@ -45,7 +45,9 @@ jobs:
 
   test:
     name: pytest
-    runs-on: ubuntu-latest
+    # Pinned: 'ubuntu-latest' now resolves to Ubuntu 26.04, which the pinned
+    # Playwright build has no browser/dependency mapping for.
+    runs-on: ubuntu-24.04
     needs: lint
     defaults:
       run:

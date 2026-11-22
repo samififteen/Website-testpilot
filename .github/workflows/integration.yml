@@ -17,7 +17,9 @@ concurrency:
 jobs:
   integration:
     name: API + browser automation
-    runs-on: ubuntu-latest
+    # Pinned: 'ubuntu-latest' now resolves to Ubuntu 26.04, which the pinned
+    # Playwright build has no browser/dependency mapping for.
+    runs-on: ubuntu-24.04
     env:
       TESTPILOT_ALLOW_LOCAL_TARGETS: 'true'
       TESTPILOT_AI_ENABLED: 'false'
