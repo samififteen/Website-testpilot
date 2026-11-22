@@ -1,0 +1,21 @@
+# The backend and frontend images use their own build contexts
+# (backend/.dockerignore and frontend/.dockerignore); this file keeps any
+# root-level build from copying local state or secrets.
+.git
+.github
+node_modules
+**/node_modules
+**/.venv
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+dist
+**/dist
+backend/data
+backend/screenshots
+backend/reports
+.env
+.env.*
+!.env.example
+*.log
+*.db

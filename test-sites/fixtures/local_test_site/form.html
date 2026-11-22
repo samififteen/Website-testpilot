@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Fixture Site — Contact form</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Contact form fixture</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About this fixture</a>
+      </nav>
+    </header>
+    <main>
+      <p>
+        This form uses native constraint validation: the name is required and the
+        email field uses <code>type="email"</code>. The submit handler only displays
+        a local message, so nothing is sent anywhere.
+      </p>
+      <form id="contact" onsubmit="event.preventDefault(); document.getElementById('sent').hidden = false;">
+        <p>
+          <label for="name">Full name</label>
+          <input id="name" name="name" type="text" required placeholder="Ada Lovelace" />
+        </p>
+        <p>
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" required placeholder="ada@example.com" />
+        </p>
+        <button type="submit">Send message</button>
+      </form>
+      <p id="sent" hidden>Thanks — this message was not actually sent.</p>
+    </main>
+  </body>
+</html>

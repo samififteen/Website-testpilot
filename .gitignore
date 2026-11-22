@@ -1,0 +1,58 @@
+# --- Node / frontend -------------------------------------------------------
+node_modules
+frontend/node_modules
+dist
+frontend/dist
+.wrangler
+coverage
+frontend/coverage
+*.log
+
+# --- Python / backend ------------------------------------------------------
+backend/.venv
+.venv
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+backend/data/
+*.db
+*.db-wal
+*.db-shm
+
+# Runtime artifacts (directories are kept via .gitkeep)
+backend/screenshots/*
+!backend/screenshots/.gitkeep
+backend/reports/*
+!backend/reports/.gitkeep
+
+# --- Environment / secrets -------------------------------------------------
+.dev.vars
+.dev.vars.*
+!.dev.vars.example
+.env
+.env.*
+!.env.example
+
+# --- Editor / OS -----------------------------------------------------------
+.DS_Store
+.idea/
+.vscode/
+
+# --- Tooling state ---------------------------------------------------------
+.freebuff/
+
+# --- Local scratch (not part of TestPilot AI) ------------------------------
+# This workspace also contains an unrelated starter app at the repository root.
+# TestPilot AI lives in backend/ and frontend/; keep the starter out of the repo.
+/index.html
+/package.json
+/bun.lock
+/deploy.json
+/tsconfig.json
+/vite.config.ts
+/wrangler.jsonc
+/public/
+/scripts/
+/src/
+/tests/

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fixture Site — Home</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Local fixture site</h1>
+      <nav>
+        <a href="about.html">About this fixture</a>
+        <a href="form.html">Contact form</a>
+        <a href="missing-page.html">Deliberately broken link</a>
+        <a href="#">Anchor without a destination</a>
+      </nav>
+    </header>
+    <main>
+      <p>
+        This page is a controlled test fixture for TestPilot AI. It contains known
+        problems so the browser testing engine can be verified end to end: a broken
+        internal link, a missing image, an uncaught JavaScript error and a slow
+        endpoint.
+      </p>
+      <p>
+        The visible content is intentionally long enough that a content check passes,
+        while the deliberately broken elements make the overall run fail.
+      </p>
+      <img src="assets/does-not-exist.png" alt="Missing image fixture" width="120" height="60" />
+      <button id="toggle" type="button" onclick="toggleDetails()">Show details</button>
+      <div id="details" hidden>
+        <p>These details were revealed by a safe button interaction.</p>
+      </div>
+      <p><a href="slow">Slow endpoint (2 seconds)</a></p>
+      <p><a href="error">Endpoint that returns HTTP 500</a></p>
+    </main>
+    <script>
+      function toggleDetails() {
+        var el = document.getElementById('details');
+        el.hidden = !el.hidden;
+      }
+      setTimeout(function () {
+        throw new Error('Fixture intentional uncaught error');
+      }, 60);
+    </script>
+  </body>
+</html>

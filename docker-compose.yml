@@ -1,0 +1,47 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    image: testpilot-ai-backend:local
+    restart: unless-stopped
+    environment:
+      TESTPILOT_DATABASE_URL: sqlite:////data/testpilot.db
+      TESTPILOT_SCREENSHOT_DIR: /data/screenshots
+      TESTPILOT_REPORT_DIR: /data/reports
+      TESTPILOT_ALLOWED_ORIGINS: '["http://localhost:8080"]'
+      TESTPILOT_MAX_CONCURRENCY: ${TESTPILOT_MAX_CONCURRENCY:-2}
+      # Optional AI analysis. Leave empty to use the rule-based engine.
+      AI_API_KEY: ${AI_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      TESTPILOT_AI_MODEL: ${TESTPILOT_AI_MODEL:-gpt-4o-mini}
+      TESTPILOT_AI_BASE_URL: ${TESTPILOT_AI_BASE_URL:-https://api.openai.com/v1}
+    volumes:
+      - testpilot-data:/data
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 25s
+    security_opt:
+      - no-new-privileges:true
+    shm_size: "1gb"
+
+  frontend:
+    build:
+      context: ./frontend
+    image: testpilot-ai-frontend:local
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  testpilot-data:
+    name: testpilot-data

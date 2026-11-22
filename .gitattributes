@@ -1,0 +1,18 @@
+# Normalise line endings so Windows and Unix clones produce identical diffs.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.pdf binary
+
+# Do not count lockfiles or vendored assets in language statistics.
+frontend/package-lock.json linguist-generated=true
+*.lock linguist-generated=true
+docs/*.png linguist-documentation
+
+# Keep the fixture website readable in diffs rather than detected as a project.
+test-sites/** linguist-documentation

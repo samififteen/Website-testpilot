@@ -1,0 +1,67 @@
+name: Bug report
+description: Something in TestPilot AI behaves incorrectly
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please do not report security vulnerabilities here — follow `SECURITY.md` in
+        this repository and report them privately instead.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you expected, and what actually occurred.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Start backend and frontend
+        2. Submit https://…
+        3. Open the report and …
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Backend API
+        - Browser runner / checks
+        - Health scoring
+        - AI analysis
+        - Report export
+        - Frontend UI
+        - Docker / deployment
+        - Documentation
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python, Node, Chromium/Playwright version, and whether you run Docker or bare metal.
+      placeholder: Windows 11, Python 3.12, Node 22, Playwright 1.5x, bare metal
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Server output, browser console, or the failing request. Remove any API keys or personal data first.
+      render: shell
+    validations:
+      required: false
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: I searched existing issues for the same problem
+          required: true
+        - label: This report contains no API keys or private data
+          required: true

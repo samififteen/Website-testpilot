@@ -1,0 +1,141 @@
+name: Integration CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: integration-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integration:
+    name: API + browser automation
+    runs-on: ubuntu-latest
+    env:
+      TESTPILOT_ALLOW_LOCAL_TARGETS: 'true'
+      TESTPILOT_AI_ENABLED: 'false'
+      # Fixture-site tests must never reach the public internet.
+      TESTPILOT_DEFAULT_TIMEOUT_SECONDS: '30'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: backend/requirements*.txt
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: pip install -r requirements-dev.txt
+
+      - name: Install headless Chromium
+        working-directory: backend
+        run: python -m playwright install --with-deps chromium
+
+      - name: Verify the browser launches
+        working-directory: backend
+        run: |
+          python - <<'PY'
+          from playwright.sync_api import sync_playwright
+          with sync_playwright() as p:
+              browser = p.chromium.launch()
+              page = browser.new_page()
+              page.set_content("<h1>ready</h1>")
+              assert page.inner_text("h1") == "ready"
+              browser.close()
+          print("Chromium automation OK")
+          PY
+
+      - name: Frontend install and build
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+
+      - name: Browser automation tests against the local fixture site
+        working-directory: backend
+        run: pytest tests/test_integration.py tests/test_api.py tests/test_link_checker.py -q
+
+      - name: Start the backend
+        working-directory: backend
+        run: |
+          uvicorn app.main:app --host 127.0.0.1 --port 8000 > uvicorn.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/api/health > /dev/null; then
+              echo "backend is healthy"
+              break
+            fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8000/api/health
+          curl -fsS http://127.0.0.1:8000/api/dashboard/stats
+
+      - name: Run a real scan through the API
+        working-directory: backend
+        run: |
+          python ../test-sites/fixtures/local_test_site/server.py --port 8099 > fixture.log 2>&1 &
+          sleep 2
+          python - <<'PY'
+          import json, time, urllib.request
+
+          def request(path, payload=None):
+              data = json.dumps(payload).encode() if payload is not None else None
+              req = urllib.request.Request(
+                  f"http://127.0.0.1:8000{path}",
+                  data=data,
+                  headers={"Content-Type": "application/json"},
+                  method="POST" if data else "GET",
+              )
+              with urllib.request.urlopen(req, timeout=30) as response:
+                  return json.loads(response.read())
+
+          created = request("/api/tests", {
+              "url": "http://127.0.0.1:8099/index.html",
+              "name": "CI fixture scan",
+              "authorized": True,
+              "config": {"max_pages": 2, "max_links": 5, "timeout_seconds": 30,
+                         "capture_screenshots": True, "ai_analysis": False},
+          })
+          execution_id = created["id"]
+          for _ in range(120):
+              report = request(f"/api/tests/{execution_id}/report")
+              if report["execution"]["status"] in {"passed", "failed", "warnings", "error"}:
+                  break
+              time.sleep(1)
+          else:
+              raise SystemExit("execution did not finish")
+
+          execution = report["execution"]
+          print("status:", execution["status"], "score:", execution["health_score"])
+          assert execution["status"] == "failed", execution
+          assert report["results"], "no results stored"
+          assert report["analysis"]["mode"] == "rule-based"
+          export = request(f"/api/tests/{execution_id}/export/json")
+          assert export["results"], "export had no results"
+          print("fixture scan stored, analysed and exported successfully")
+          PY
+
+      - name: Upload integration logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-logs
+          path: |
+            backend/uvicorn.log
+            backend/fixture.log
+          if-no-files-found: ignore
+          retention-days: 7
