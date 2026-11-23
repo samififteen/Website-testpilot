@@ -6,8 +6,13 @@ requires-python = ">=3.12"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# One event loop for the whole run: Playwright handles are bound to the loop
+# that created them, and switching loops per test leaves driver subprocesses to
+# be garbage collected on a closed loop (an unraisable exception, which pytest
+# escalates to a teardown error).
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
+asyncio_default_test_loop_scope = "session"
 addopts = "-q"
 filterwarnings = ["ignore::DeprecationWarning"]
 

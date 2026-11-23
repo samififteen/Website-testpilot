@@ -15,6 +15,7 @@ from collections.abc import Iterator
 from pathlib import Path
 
 import pytest
+import pytest_asyncio
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
 REPO_ROOT = BACKEND_DIR.parent
@@ -46,6 +47,15 @@ from app.models import (  # noqa: E402
     TestResult,
 )
 from fastapi.testclient import TestClient  # noqa: E402
+
+
+@pytest_asyncio.fixture(scope="session", loop_scope="session", autouse=True)
+async def _shutdown_browsers() -> Iterator[None]:
+    """Close the shared browser on the loop that owns it when the run ends."""
+    yield
+    from app.services.browser.browser_manager import shutdown_browsers
+
+    await shutdown_browsers()
 
 
 @pytest.fixture(autouse=True)

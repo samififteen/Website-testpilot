@@ -73,22 +73,7 @@ jobs:
         run: python -m playwright install --with-deps chromium
 
       - name: Run tests
-        run: |
-          set -o pipefail
-          pytest --junitxml=reports/pytest.xml -q --tb=line -rf 2>&1 | tee pytest.log
-
-      - name: Annotate failures
-        if: failure()
-        run: |
-          grep -E "^(FAILED|ERROR)" pytest.log | head -8 | while IFS= read -r line; do
-            echo "::error title=failing-test::$line"
-          done
-          grep -E "^[^ ].*:[0-9]+: " pytest.log | head -8 | while IFS= read -r line; do
-            echo "::error title=traceback::$line"
-          done
-          tail -n 20 pytest.log | while IFS= read -r line; do
-            echo "::notice title=log-tail::$line"
-          done
+        run: pytest --junitxml=reports/pytest.xml
 
       - name: Upload test report
         if: always()

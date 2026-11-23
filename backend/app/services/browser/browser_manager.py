@@ -74,6 +74,11 @@ class BrowserManager:
         context.set_default_timeout(settings.default_timeout_seconds * 1000)
         return context
 
+    def owns_loop(self, loop: asyncio.AbstractEventLoop | None = None) -> bool:
+        """True when this manager's handles belong to ``loop`` (or none exist)."""
+        current = asyncio.get_running_loop() if loop is None else loop
+        return self._loop is None or self._loop is current
+
     async def close(self) -> None:
         """Close the browser and driver without ever blocking on a stale loop.
 
@@ -116,9 +121,16 @@ async def get_browser_manager(browser_type: str = "chromium") -> BrowserManager:
 
 
 async def shutdown_browsers() -> None:
-    for manager in list(_managers.values()):
+    loop = asyncio.get_running_loop()
+    for name, manager in list(_managers.items()):
+        if not manager.owns_loop(loop):
+            # The browser belongs to another event loop. Closing it here can
+            # never complete, and dropping the reference would leave a driver
+            # subprocess to be collected on a closed loop, so keep it for the
+            # loop that owns it instead.
+            continue
         await manager.close()
-    _managers.clear()
+        _managers.pop(name, None)
 
 
 async def browser_health(browser_type: str = "chromium") -> dict[str, Any]:
