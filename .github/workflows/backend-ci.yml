@@ -48,6 +48,8 @@ jobs:
     # Pinned: 'ubuntu-latest' now resolves to Ubuntu 26.04, which the pinned
     # Playwright build has no browser/dependency mapping for.
     runs-on: ubuntu-24.04
+    # Keep a stuck browser run from occupying a runner for 6 hours.
+    timeout-minutes: 20
     needs: lint
     defaults:
       run:

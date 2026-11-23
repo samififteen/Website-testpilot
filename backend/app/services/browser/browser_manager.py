@@ -75,15 +75,31 @@ class BrowserManager:
         return context
 
     async def close(self) -> None:
+        """Close the browser and driver without ever blocking on a stale loop.
+
+        A browser handle is bound to the event loop that created it. When
+        shutdown happens on another loop (pytest-asyncio gives each test its own
+        loop, and Starlette's TestClient runs the lifespan on a portal thread),
+        awaiting that handle can never complete because its reader task lives on
+        a loop that is already gone. In that case the references are dropped
+        instead of awaited; closes on the owning loop are time-boxed anyway.
+        """
+        loop = asyncio.get_running_loop()
+        if self._loop is not None and self._loop is not loop:
+            self._browser = None
+            self._playwright = None
+            self._loop = None
+            return
         async with self._lock:
-            if self._browser is not None:
-                with contextlib.suppress(Exception):
-                    await self._browser.close()
-                self._browser = None
-            if self._playwright is not None:
-                with contextlib.suppress(Exception):
-                    await self._playwright.stop()
-                self._playwright = None
+            browser, playwright = self._browser, self._playwright
+            self._browser = None
+            self._playwright = None
+            self._loop = None
+            for handle, method in ((browser, "close"), (playwright, "stop")):
+                if handle is None:
+                    continue
+                with contextlib.suppress(Exception, asyncio.CancelledError):
+                    await asyncio.wait_for(getattr(handle, method)(), timeout=10)
 
 
 _managers: dict[str, BrowserManager] = {}
