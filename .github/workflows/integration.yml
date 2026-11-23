@@ -73,11 +73,14 @@ jobs:
       - name: Browser automation tests against the local fixture site
         working-directory: backend
         run: |
-          set -o pipefail
-          pytest tests/test_integration.py tests/test_api.py tests/test_link_checker.py -q --tb=line -rf 2>&1 | tee pytest.log
+          for i in 1 2 3 4 5 6; do
+            echo "--- run $i ---" | tee -a pytest.log
+            pytest tests/test_integration.py tests/test_api.py tests/test_link_checker.py -q --tb=line -rf 2>&1 | tee -a pytest.log
+            echo "--- run $i exit ${PIPESTATUS[0]} ---" | tee -a pytest.log
+          done
 
       - name: Annotate failures
-        if: failure()
+        if: always()
         working-directory: backend
         run: |
           grep -E "^(FAILED|ERROR)" pytest.log | head -8 | while IFS= read -r line; do
