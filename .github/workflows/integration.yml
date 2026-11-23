@@ -72,7 +72,23 @@ jobs:
 
       - name: Browser automation tests against the local fixture site
         working-directory: backend
-        run: pytest tests/test_integration.py tests/test_api.py tests/test_link_checker.py -q
+        run: |
+          set -o pipefail
+          pytest tests/test_integration.py tests/test_api.py tests/test_link_checker.py -q --tb=line -rf 2>&1 | tee pytest.log
+
+      - name: Annotate failures
+        if: failure()
+        working-directory: backend
+        run: |
+          grep -E "^(FAILED|ERROR)" pytest.log | head -8 | while IFS= read -r line; do
+            echo "::error title=failing-test::$line"
+          done
+          grep -E "^[^ ].*:[0-9]+: " pytest.log | head -8 | while IFS= read -r line; do
+            echo "::error title=traceback::$line"
+          done
+          tail -n 20 pytest.log | while IFS= read -r line; do
+            echo "::notice title=log-tail::$line"
+          done
 
       - name: Start the backend
         working-directory: backend
