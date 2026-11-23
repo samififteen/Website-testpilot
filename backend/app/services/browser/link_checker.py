@@ -101,7 +101,12 @@ async def _fetch(
     current = url
     for _hop in range(settings.outbound_redirect_limit + 1):
         if not allow_private:
-            await assert_safe_url(current)
+            try:
+                # The caller's policy must win over the global default here;
+                # otherwise a link to a blocked address is actually fetched.
+                await assert_safe_url(current, allow_private=False)
+            except UnsafeTargetError as exc:
+                return "inconclusive", None, current, str(exc)
         try:
             response = await client.get(current, follow_redirects=False)
         except httpx.TimeoutException:
@@ -115,7 +120,7 @@ async def _fetch(
             target = urljoin(current, location)
             if not allow_private:
                 try:
-                    await assert_safe_url(target)
+                    await assert_safe_url(target, allow_private=False)
                 except UnsafeTargetError:
                     return (
                         "inconclusive",
