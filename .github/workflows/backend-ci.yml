@@ -74,18 +74,25 @@ jobs:
 
       - name: Run tests
         run: |
-          set -o pipefail
-          pytest --junitxml=reports/pytest.xml -q --tb=short -rf 2>&1 | tee pytest.log
+          for i in 1 2 3 4; do
+            echo "=== run $i ==="
+            pytest --junitxml=reports/pytest.xml -q --tb=short -rf 2>&1 | tee "pytest-$i.log"
+            echo "=== run $i exit ${PIPESTATUS[0]} ==="
+          done
 
       - name: Annotate failures
-        if: failure()
+        if: always()
         run: |
-          grep -E "^(FAILED|ERROR)" pytest.log | head -8 | while IFS= read -r line; do
+          grep -hE "exit [0-9]+" pytest-*.log | head -6 | while IFS= read -r line; do
+            echo "::notice title=exit::$line"
+          done
+          grep -hE "^(FAILED|ERROR)" pytest-*.log | head -10 | while IFS= read -r line; do
             echo "::error title=failing-test::$line"
           done
-          grep -nE "^E +|assert|Error|error" pytest.log | head -8 | while IFS= read -r line; do
-            echo "::error title=traceback::$line"
+          grep -hE "^E   " pytest-*.log | head -10 | while IFS= read -r line; do
+            echo "::error title=assert::$line"
           done
+          grep -hE "^(FAILED|ERROR)" pytest-*.log | head -1 >/dev/null || true
 
       - name: Upload test report
         if: always()
